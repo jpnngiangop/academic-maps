@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
-<head>
+<html lang="vi"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Magnifica Humanitas — Bản đồ học thuật</title>
@@ -93,14 +92,27 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 .search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--ink3);cursor:pointer;font-size:.85rem;display:none;padding:2px}
 .search-clear.vis{display:block}
 .search-hint{font-size:.72rem;color:var(--ink3);white-space:nowrap}
-.suggestions{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);box-shadow:var(--shadow-lg);z-index:200;max-height:340px;overflow-y:auto;display:none}
+.suggestions{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--card);border:1px solid var(--border2);border-radius:var(--radius);box-shadow:var(--shadow-lg);z-index:200;max-height:min(560px,75vh);overflow-y:auto;display:none;min-width:480px;width:max(100%,640px)}
 .suggestions.vis{display:block}
-.sugg-item{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .12s;font-size:.86rem}
-.sugg-item:hover,.sugg-item.active{background:var(--bg2)}
+.sugg-header{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:2px solid var(--gold-bg);background:var(--bg2);position:sticky;top:0;z-index:5;font-size:.78rem;color:var(--ink2);font-weight:600}
+.sugg-header-count{background:var(--gold);color:#fff;padding:2px 9px;border-radius:10px;font-size:.72rem;font-weight:700}
+.sugg-header-terms{flex:1;font-style:italic;color:var(--ink3);font-weight:400;font-size:.74rem;text-align:right}
+.sugg-header-terms code{background:var(--gold-bg);color:var(--gold);padding:1px 6px;border-radius:3px;font-family:'Menlo','Consolas',monospace;font-size:.78em;margin-left:3px}
+.sugg-group{border-bottom:1px dashed var(--border)}
+.sugg-group-head{padding:7px 14px 5px;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);font-weight:700;background:var(--bg3);display:flex;align-items:center;gap:8px;position:sticky;top:42px;z-index:4}
+.sugg-group-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.sugg-group-count{margin-left:auto;background:var(--card);color:var(--ink2);padding:1px 7px;border-radius:8px;font-size:.7rem;font-weight:600;border:1px solid var(--border)}
+.sugg-item{display:flex;flex-direction:column;gap:4px;padding:9px 14px 10px;cursor:pointer;border-bottom:1px solid var(--border);transition:background .12s;font-size:.86rem}
+.sugg-item:hover,.sugg-item.active{background:var(--gold-bg)}
 .sugg-item:last-child{border-bottom:none}
-.sugg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.sugg-label{flex:1;color:var(--ink)}
-.sugg-type{font-size:.70rem;color:var(--ink3)}
+.sugg-item-top{display:flex;align-items:center;gap:8px}
+.sugg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sugg-label{flex:1;color:var(--ink);font-weight:600;font-family:var(--serif);font-style:italic}
+.sugg-type{font-size:.68rem;color:var(--ink3);background:var(--bg2);padding:1px 7px;border-radius:8px;border:1px solid var(--border);flex-shrink:0}
+.sugg-snippet{font-size:.78rem;color:var(--ink2);line-height:1.55;padding-left:15px;border-left:2px solid var(--gold-bg);font-style:italic;color:var(--ink3)}
+.sugg-snippet mark{background:rgba(201,149,43,.28);color:var(--gold);font-weight:700;padding:0 2px;border-radius:2px;font-style:normal}
+.sugg-empty{padding:20px;text-align:center;color:var(--ink3);font-style:italic;font-size:.85rem}
+.sugg-empty strong{display:block;color:var(--ink2);font-style:normal;margin-bottom:5px;font-size:.92rem}
 
 /* ══ LAYOUT ══ */
 .page-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 220px);max-width:1280px;margin:0 auto}
@@ -549,9 +561,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 <!-- EDIT BAR -->
 <div class="edit-mode-bar" id="editBar">
   <span class="edit-badge">✎ EDIT MODE</span>
-  <span style="opacity:.8">Bấm vào bất kỳ đoạn văn nào để sửa</span>
+  <span style="opacity:.85">Click vào bất cứ đoạn text nào để sửa — bao gồm cả Toàn văn dịch, Phản biện AI, footnotes...</span>
   <div class="edit-mode-bar-actions">
-    <button class="edit-action-btn" onclick="saveEdits()">💾 Lưu thay đổi</button>
+    <button class="edit-action-btn" onclick="saveEdits()" title="Ghi đè file gốc (Chrome/Edge/Opera) hoặc download (Safari/Firefox)">💾 Lưu đè file</button>
     <button class="edit-action-btn" onclick="exitEdit()">✕ Thoát</button>
   </div>
 </div>
@@ -560,23 +572,21 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 <div class="searchbar">
   <div class="search-wrap">
     <span class="search-icon-l">🔍</span>
-    <input type="text" id="searchInput" placeholder="Tìm kiếm đa ngôn ngữ trong toàn bộ thông điệp… (nhấn / để focus)"
-      autocomplete="off" spellcheck="false"
-      oninput="onSearch(this.value)" onkeydown="onSearchKey(event)">
+    <input type="text" id="searchInput" placeholder="Tìm kiếm đa ngôn ngữ — nhập nhiều từ cách nhau bằng dấu cách (vd: 'Babel hiệp thông')" autocomplete="off" spellcheck="false" oninput="onSearch(this.value)" onkeydown="onSearchKey(event)">
     <button class="search-clear" id="clearBtn" onclick="clearSearch()">✕</button>
     <div class="suggestions" id="suggestions"></div>
   </div>
-  <span class="search-hint">/ để tìm</span>
+  <span class="search-hint">/ để tìm · nhiều từ = AND</span>
 </div>
 
 <!-- LAYOUT -->
 <div class="page-layout">
   <nav class="sidenav" id="sidenav">
     <div class="nav-section-label">Cấu trúc tài liệu</div>
-    <div id="navCats"></div>
+    <div id="navCats"><a class="nav-link" href="#nhom1" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#c9952b"></div><div class="nav-name">I. NỀN TẢNG: BABEL HAY GIÊRUSALEM</div><div class="nav-count">2</div></a><a class="nav-link" href="#nhom2" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#2b8a7a"></div><div class="nav-name">II. PHẨM GIÁ NHÂN VỊ &amp; NĂM NGUYÊN TẮC HTXH</div><div class="nav-count">2</div></a><a class="nav-link" href="#nhom3" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#1a5276"></div><div class="nav-name">III. AI &amp; MÔ THỨC KỸ TRỊ</div><div class="nav-count">3</div></a><a class="nav-link" href="#nhom4" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#6b4fa0"></div><div class="nav-name">IV. LAO ĐỘNG, GIA ĐÌNH, NÔ LỆ MỚI</div><div class="nav-count">3</div></a><a class="nav-link" href="#nhom5" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#8a3a2b"></div><div class="nav-name">V. CHIẾN TRANH, VÀ VĂN MINH TÌNH YÊU</div><div class="nav-count">3</div></a><a class="nav-link" href="#nhom6" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#7b3f00"></div><div class="nav-name">VI. KẾT LUẬN: MAGNIFICAT CHO THỜI ĐẠI AI</div><div class="nav-count">2</div></a></div>
     <div class="nav-divider"></div>
     <div class="nav-section-label">Phân loại nội dung</div>
-    <a class="nav-tab-link tab-active" onclick="switchTab('chuong',this)" data-tab="chuong"><span class="nav-icon">📖</span>Chương <span class="nav-count">7</span></a>
+    <a class="nav-tab-link" onclick="switchTab('chuong',this)" data-tab="chuong"><span class="nav-icon">📖</span>Chương <span class="nav-count">7</span></a>
     <a class="nav-tab-link" onclick="switchTab('chu_diem',this)" data-tab="chu_diem"><span class="nav-icon">📌</span>Chủ điểm <span class="nav-count">12</span></a>
     <a class="nav-tab-link" onclick="switchTab('tu_khoa',this)" data-tab="tu_khoa"><span class="nav-icon">🗝</span>Từ khoá <span class="nav-count">30</span></a>
     <a class="nav-tab-link" onclick="switchTab('nan_de',this)" data-tab="nan_de"><span class="nav-icon">⚡</span>Nan đề <span class="nav-count">8</span></a>
@@ -584,13 +594,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <a class="nav-tab-link" onclick="switchTab('theo_chu_de',this)" data-tab="theo_chu_de"><span class="nav-icon">🗂</span>Theo chủ đề <span class="nav-count">6</span></a>
     <a class="nav-tab-link" onclick="switchTab('hop_bao',this)" data-tab="hop_bao"><span class="nav-icon">🎙</span>Họp báo <span class="nav-count">7</span></a>
     <a class="nav-tab-link" onclick="switchTab('footnotes',this)" data-tab="footnotes"><span class="nav-icon">📚</span>Chú thích <span class="nav-count">224</span></a>
-    <a class="nav-tab-link" onclick="switchTab('toan_van',this)" data-tab="toan_van"><span class="nav-icon">📜</span>Toàn văn dịch <span class="nav-count">245</span></a>
+    <a class="nav-tab-link tab-active" onclick="switchTab('toan_van',this)" data-tab="toan_van"><span class="nav-icon">📜</span>Toàn văn dịch <span class="nav-count">245</span></a>
     <a class="nav-tab-link" onclick="switchTab('phan_bien',this)" data-tab="phan_bien"><span class="nav-icon">🤖</span>Phản biện AI <span class="nav-count">12</span></a>
   </nav>
 
   <main class="main-content">
     <div class="tabs-bar" id="tabsBar">
-      <button class="tab-btn active" data-tab="chuong" onclick="switchTab('chuong',this)">📖 Chương <span class="tab-chip">7</span></button>
+      <button class="tab-btn" data-tab="chuong" onclick="switchTab('chuong',this)">📖 Chương <span class="tab-chip">7</span></button>
       <button class="tab-btn" data-tab="chu_diem" onclick="switchTab('chu_diem',this)">📌 Chủ điểm <span class="tab-chip">12</span></button>
       <button class="tab-btn" data-tab="tu_khoa" onclick="switchTab('tu_khoa',this)">🗝 Từ khoá <span class="tab-chip">30</span></button>
       <button class="tab-btn" data-tab="nan_de" onclick="switchTab('nan_de',this)">⚡ Nan đề <span class="tab-chip">8</span></button>
@@ -598,12 +608,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <button class="tab-btn" data-tab="theo_chu_de" onclick="switchTab('theo_chu_de',this)">🗂 Theo chủ đề <span class="tab-chip">6</span></button>
       <button class="tab-btn" data-tab="hop_bao" onclick="switchTab('hop_bao',this)">🎙 Họp báo <span class="tab-chip">7</span></button>
       <button class="tab-btn" data-tab="footnotes" onclick="switchTab('footnotes',this)">📚 Chú thích <span class="tab-chip">224</span></button>
-      <button class="tab-btn" data-tab="toan_van" onclick="switchTab('toan_van',this)">📜 Toàn văn dịch <span class="tab-chip">245</span></button>
+      <button class="tab-btn active" data-tab="toan_van" onclick="switchTab('toan_van',this)">📜 Toàn văn dịch <span class="tab-chip">245</span></button>
       <button class="tab-btn" data-tab="phan_bien" onclick="switchTab('phan_bien',this)">🤖 Phản biện AI <span class="tab-chip">12</span></button>
     </div>
 
     <!-- CHƯƠNG -->
-    <section class="section active" id="sec-chuong">
+    <section class="section" id="sec-chuong">
       <div class="sec-toolbar">
         <div class="tb-left"><span style="font-size:.84rem;color:var(--ink2)">📖 Cấu trúc 7 phần: Giới thiệu + 5 chương + Kết luận. Tổng 245 đoạn (1–245).</span></div>
       </div>
@@ -669,7 +679,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
             <span class="muc-doan">§ 28–44</span>
             <span class="muc-ten">Sự phát triển HTXH từ Lêô XIII đến nay</span>
           </div>
-          <div class="muc-body">Lược đồ: Rerum Novarum (1891) → Quadragesimo Anno (1931, Piô XI) → Piô XII → Mater et Magistra & Pacem in Terris (Gioan XXIII) → Gaudium et Spes & Dignitatis Humanae (VII) → Populorum Progressio & Octogesima Adveniens (Phaolô VI) → Laborem Exercens, Sollicitudo Rei Socialis, Centesimus Annus (Gioan Phaolô II) → Caritas in Veritate (Bênêđictô XVI) → Evangelii Gaudium, Laudato Si', Fratelli Tutti, Dilexit Nos (Phanxicô).</div>
+          <div class="muc-body">Lược đồ: Rerum Novarum (1891) → Quadragesimo Anno (1931, Piô XI) → Piô XII → Mater et Magistra &amp; Pacem in Terris (Gioan XXIII) → Gaudium et Spes &amp; Dignitatis Humanae (VII) → Populorum Progressio &amp; Octogesima Adveniens (Phaolô VI) → Laborem Exercens, Sollicitudo Rei Socialis, Centesimus Annus (Gioan Phaolô II) → Caritas in Veritate (Bênêđictô XVI) → Evangelii Gaudium, Laudato Si', Fratelli Tutti, Dilexit Nos (Phanxicô).</div>
         </div><div class="muc-item">
           <div class="muc-head">
             <span class="muc-doan">§ 45</span>
@@ -967,7 +977,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <span class="toggle-arrow">▸</span>
   </div>
   <div class="card-body">
-    <ol class="arg-list"><li>Lựa chọn căn bản của thời đại AI không phải 'có' hay 'không' với công nghệ, mà giữa <span class='kw-link' onclick='jumpToKw("Babel")'>việc xây Tháp Babel</span> và việc trùng tu Giêrusalem (n. 9).</li><li>Babel = đồng nhất hoá, không quy chiếu Thiên Chúa, kiêu hãnh tự đủ — kết cục là phân tán chứ không hiệp nhất (n. 7).</li><li>Giêrusalem-Nehemia = mọi người được phân công 'phần tường của mình', trật tự công việc được tổ chức trên cầu nguyện và lắng nghe (n. 8).</li><li>Hình ảnh Augustinô (De civ. Dei XIV,28): 'Hai tình yêu đã xây hai thành đô' — việc xây Babel hay trùng tu Giêrusalem bắt đầu trong mỗi trái tim (n. 130).</li></ol>
+    <ol class="arg-list"><li>Lựa chọn căn bản của thời đại AI không phải 'có' hay 'không' với công nghệ, mà giữa <span class="kw-link" onclick="jumpToKw(&quot;Babel&quot;)">việc xây Tháp Babel</span> và việc trùng tu Giêrusalem (n. 9).</li><li>Babel = đồng nhất hoá, không quy chiếu Thiên Chúa, kiêu hãnh tự đủ — kết cục là phân tán chứ không hiệp nhất (n. 7).</li><li>Giêrusalem-Nehemia = mọi người được phân công 'phần tường của mình', trật tự công việc được tổ chức trên cầu nguyện và lắng nghe (n. 8).</li><li>Hình ảnh Augustinô (De civ. Dei XIV,28): 'Hai tình yêu đã xây hai thành đô' — việc xây Babel hay trùng tu Giêrusalem bắt đầu trong mỗi trái tim (n. 130).</li></ol>
     <blockquote class="citation">The primary choice is not between a 'yes' or 'no' to technology, but rather between constructing Babel or rebuilding Jerusalem.</blockquote>
     <div class="source-row"><span class="src-label">Nguồn:</span><span class="src-badge">Magnifica Humanitas, n. 9</span><span class="src-badge">n. 130</span><span class="src-badge">Augustinô, De civitate Dei XIV, 28</span></div>
     <div class="fn-refs-row"><span class="fn-refs-label">Chú thích liên quan:</span><span class="fn-chip" onclick="jumpToFn(139)">[139]</span></div>
@@ -983,7 +993,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <span class="toggle-arrow">▸</span>
   </div>
   <div class="card-body">
-    <ol class="arg-list"><li>Mọi người được tạo dựng theo hình ảnh và họa ảnh <span class='kw-link' onclick='jumpToKw("Triune God")'>Thiên Chúa Ba Ngôi</span> (St 1,26-27, n. 50).</li><li>Bốn tầng phẩm giá: luân lý / xã hội / hiện sinh / hữu thể — cấp 'ontological' là không thể tổn hại (n. 52).</li><li><em>Dignitas Infinita</em> (2024): 'Mọi người sở hữu một phẩm giá vô hạn, không thể chuyển nhượng' — bất chấp mọi tình huống (n. 53).</li><li>Lý do của vô hạn: tình yêu của Thiên Chúa kêu gọi vào tình bạn là vô hạn và vô điều kiện (n. 53, dẫn GPII).</li></ol>
+    <ol class="arg-list"><li>Mọi người được tạo dựng theo hình ảnh và họa ảnh <span class="kw-link" onclick="jumpToKw(&quot;Triune God&quot;)">Thiên Chúa Ba Ngôi</span> (St 1,26-27, n. 50).</li><li>Bốn tầng phẩm giá: luân lý / xã hội / hiện sinh / hữu thể — cấp 'ontological' là không thể tổn hại (n. 52).</li><li><em>Dignitas Infinita</em> (2024): 'Mọi người sở hữu một phẩm giá vô hạn, không thể chuyển nhượng' — bất chấp mọi tình huống (n. 53).</li><li>Lý do của vô hạn: tình yêu của Thiên Chúa kêu gọi vào tình bạn là vô hạn và vô điều kiện (n. 53, dẫn GPII).</li></ol>
     <blockquote class="citation">Every human person possesses an infinite dignity, inalienably grounded in his or her very being.</blockquote>
     <div class="source-row"><span class="src-label">Nguồn:</span><span class="src-badge">MH n. 50-53</span><span class="src-badge">Dignitas Infinita (DDF, 2024) số 1, 7-8</span><span class="src-badge">GS 22</span></div>
     <div class="fn-refs-row"><span class="fn-refs-label">Chú thích liên quan:</span><span class="fn-chip" onclick="jumpToFn(52)">[52]</span> <span class="fn-chip" onclick="jumpToFn(60)">[60]</span> <span class="fn-chip" onclick="jumpToFn(61)">[61]</span> <span class="fn-chip" onclick="jumpToFn(62)">[62]</span> <span class="fn-chip" onclick="jumpToFn(63)">[63]</span></div>
@@ -999,7 +1009,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <span class="toggle-arrow">▸</span>
   </div>
   <div class="card-body">
-    <ol class="arg-list"><li><span class='kw-link' onclick='jumpToKw("Common good")'>Công ích</span>: tổng thể những điều kiện xã hội cho phép mỗi người đạt viên mãn (GS 26, n. 60).</li><li><span class='kw-link' onclick='jumpToKw("Universal destination")'>Đích đến phổ quát của của cải</span>: nay bao gồm cả thuật toán, dữ liệu, nền tảng kỹ thuật số (n. 67).</li><li><span class='kw-link' onclick='jumpToKw("Subsidiarity")'>Bổ trợ</span>: trong thế giới số, 'cấp cao nhất' không phải Nhà nước mà là các đại gia công nghệ (n. 71).</li><li><span class='kw-link' onclick='jumpToKw("Solidarity")'>Liên đới</span>: vừa là nguyên tắc khách quan, vừa là một nhân đức kiên trì (n. 75).</li><li><span class='kw-link' onclick='jumpToKw("Social justice")'>Công bằng xã hội</span>: bắt đầu từ những kẻ bé mọn nhất (n. 78); kiểm điểm bằng cách đối xử với người di cư (n. 81).</li></ol>
+    <ol class="arg-list"><li><span class="kw-link" onclick="jumpToKw(&quot;Common good&quot;)">Công ích</span>: tổng thể những điều kiện xã hội cho phép mỗi người đạt viên mãn (GS 26, n. 60).</li><li><span class="kw-link" onclick="jumpToKw(&quot;Universal destination&quot;)">Đích đến phổ quát của của cải</span>: nay bao gồm cả thuật toán, dữ liệu, nền tảng kỹ thuật số (n. 67).</li><li><span class="kw-link" onclick="jumpToKw(&quot;Subsidiarity&quot;)">Bổ trợ</span>: trong thế giới số, 'cấp cao nhất' không phải Nhà nước mà là các đại gia công nghệ (n. 71).</li><li><span class="kw-link" onclick="jumpToKw(&quot;Solidarity&quot;)">Liên đới</span>: vừa là nguyên tắc khách quan, vừa là một nhân đức kiên trì (n. 75).</li><li><span class="kw-link" onclick="jumpToKw(&quot;Social justice&quot;)">Công bằng xã hội</span>: bắt đầu từ những kẻ bé mọn nhất (n. 78); kiểm điểm bằng cách đối xử với người di cư (n. 81).</li></ol>
     <blockquote class="citation">These principles do not constitute a curb on innovation; instead they make it civilized and humane.</blockquote>
     <div class="source-row"><span class="src-label">Nguồn:</span><span class="src-badge">MH n. 46-89, n. 164</span><span class="src-badge">GS 26</span><span class="src-badge">Compendium HTXH</span></div>
     <div class="fn-refs-row"><span class="fn-refs-label">Chú thích liên quan:</span><span class="fn-chip" onclick="jumpToFn(76)">[76]</span> <span class="fn-chip" onclick="jumpToFn(80)">[80]</span> <span class="fn-chip" onclick="jumpToFn(81)">[81]</span> <span class="fn-chip" onclick="jumpToFn(82)">[82]</span> <span class="fn-chip" onclick="jumpToFn(83)">[83]</span> <span class="fn-chip" onclick="jumpToFn(84)">[84]</span> <span class="fn-chip" onclick="jumpToFn(85)">[85]</span> <span class="fn-chip" onclick="jumpToFn(86)">[86]</span> <span class="fn-more">+11 more</span></div>
@@ -1015,7 +1025,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <span class="toggle-arrow">▸</span>
   </div>
   <div class="card-body">
-    <ol class="arg-list"><li><span class='kw-link' onclick='jumpToKw("Technocratic paradigm")'>Mô thức kỹ trị</span>: khuynh hướng để logic của hiệu năng, kiểm soát và lợi nhuận một mình định hình mọi quyết định (n. 92).</li><li>Công nghệ không phải chỉ là dụng cụ — khi trở thành tiêu chuẩn duy nhất, nó bắt đầu định nghĩa cái gì đáng kể và cái gì có thể bỏ đi (n. 92).</li><li>Quyền lực số tập trung trong tay vài tác nhân tư nhân, thoát khỏi giám sát công, tạo ra phụ thuộc, loại trừ, thao túng mới (n. 95).</li><li>Romano Guardini (1951): 'Con người hiện đại đã không được huấn luyện để dùng quyền lực một cách tốt' (n. 93).</li></ol>
+    <ol class="arg-list"><li><span class="kw-link" onclick="jumpToKw(&quot;Technocratic paradigm&quot;)">Mô thức kỹ trị</span>: khuynh hướng để logic của hiệu năng, kiểm soát và lợi nhuận một mình định hình mọi quyết định (n. 92).</li><li>Công nghệ không phải chỉ là dụng cụ — khi trở thành tiêu chuẩn duy nhất, nó bắt đầu định nghĩa cái gì đáng kể và cái gì có thể bỏ đi (n. 92).</li><li>Quyền lực số tập trung trong tay vài tác nhân tư nhân, thoát khỏi giám sát công, tạo ra phụ thuộc, loại trừ, thao túng mới (n. 95).</li><li>Romano Guardini (1951): 'Con người hiện đại đã không được huấn luyện để dùng quyền lực một cách tốt' (n. 93).</li></ol>
     <blockquote class="citation">More power does not necessarily imply something better.</blockquote>
     <div class="source-row"><span class="src-label">Nguồn:</span><span class="src-badge">MH n. 92-96, 119</span><span class="src-badge">Laudato Si' n. 106-109</span><span class="src-badge">R. Guardini, Das Ende der Neuzeit (1951)</span></div>
     <div class="fn-refs-row"><span class="fn-refs-label">Chú thích liên quan:</span><span class="fn-chip" onclick="jumpToFn(119)">[119]</span> <span class="fn-chip" onclick="jumpToFn(120)">[120]</span> <span class="fn-chip" onclick="jumpToFn(121)">[121]</span></div>
@@ -1971,7 +1981,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="sec-toolbar">
         <div class="tb-left"><span style="font-size:.84rem;color:var(--ink2)">🗂 Bản đồ tư tưởng theo cụm chủ đề — click vào thẻ để xem chi tiết</span></div>
       </div>
-      <div id="theo-chu-de-content"></div>
+      <div id="theo-chu-de-content"><div class="cat-section" id="nhom1"><div class="cat-head"><div class="cat-head-dot" style="background:#c9952b"></div><h2 class="cat-head-title">I. NỀN TẢNG: BABEL HAY GIÊRUSALEM</h2><span class="cat-head-n">2 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#c9952b" data-cat="nhom1" data-idx="0"><div class="tc-kw">Hai hình ảnh Kinh Thánh</div><div class="tc-tags"><span class="tc-tag de">Tower of Babel</span><span class="tc-tag de">Nehemiah</span><span class="tc-tag">Tháp Babel</span><span class="tc-tag">Nehemia</span></div><div class="tc-preview">Hai dự án xây dựng — đối lập làm trục biện chứng cho toàn thông điệp.</div></div><div class="topic-card" style="--cc:#c9952b" data-cat="nhom1" data-idx="1"><div class="tc-kw">Hai thành đô của Augustinô</div><div class="tc-tags"><span class="tc-tag de">Two cities</span><span class="tc-tag de">Duae civitates</span><span class="tc-tag">Hai thành đô</span><span class="tc-tag">Hai tình yêu</span></div><div class="tc-preview">Augustinô (De civ. Dei XIV, 28): hai tình yêu xây hai thành đô.</div></div></div></div><div class="cat-section" id="nhom2"><div class="cat-head"><div class="cat-head-dot" style="background:#2b8a7a"></div><h2 class="cat-head-title">II. PHẨM GIÁ NHÂN VỊ &amp; NĂM NGUYÊN TẮC HTXH</h2><span class="cat-head-n">2 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#2b8a7a" data-cat="nhom2" data-idx="0"><div class="tc-kw">Dignitas Infinita — Phẩm giá vô hạn</div><div class="tc-tags"><span class="tc-tag de">Dignitas infinita</span><span class="tc-tag de">Imago Trinitatis</span><span class="tc-tag">Phẩm giá vô hạn</span><span class="tc-tag">Hình ảnh Ba Ngôi</span></div><div class="tc-preview">Bốn cấp phẩm giá, cấp hữu thể là vô hạn và không thể di chuyển.</div></div><div class="topic-card" style="--cc:#2b8a7a" data-cat="nhom2" data-idx="1"><div class="tc-kw">Năm nguyên tắc trong thời số</div><div class="tc-tags"><span class="tc-tag de">Common good</span><span class="tc-tag de">Subsidiarity</span><span class="tc-tag">Công ích</span><span class="tc-tag">Bổ trợ</span></div><div class="tc-preview">Mỗi nguyên tắc được áp dụng vào AI: thuật toán, dữ liệu, nền tảng.</div></div></div></div><div class="cat-section" id="nhom3"><div class="cat-head"><div class="cat-head-dot" style="background:#1a5276"></div><h2 class="cat-head-title">III. AI &amp; MÔ THỨC KỸ TRỊ</h2><span class="cat-head-n">3 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#1a5276" data-cat="nhom3" data-idx="0"><div class="tc-kw">AI: cultivated, not built</div><div class="tc-tags"><span class="tc-tag de">AI</span><span class="tc-tag de">Artificial Intelligence</span><span class="tc-tag">TTNT</span><span class="tc-tag">Trí tuệ nhân tạo</span></div><div class="tc-preview">Bản chất AI: mô phỏng chứ không có kinh nghiệm; cultivated, not built.</div></div><div class="topic-card" style="--cc:#1a5276" data-cat="nhom3" data-idx="1"><div class="tc-kw">Mô thức kỹ trị — Technocratic Paradigm</div><div class="tc-tags"><span class="tc-tag de">Technocratic paradigm</span><span class="tc-tag de">Laudato Si'</span><span class="tc-tag">Mô thức kỹ trị</span></div><div class="tc-preview">Logic hiệu năng-kiểm soát-lợi nhuận một mình định hình mọi quyết định.</div></div><div class="topic-card" style="--cc:#1a5276" data-cat="nhom3" data-idx="2"><div class="tc-kw">Transhumanism &amp; Posthumanism</div><div class="tc-tags"><span class="tc-tag de">Transhumanism</span><span class="tc-tag de">Posthumanism</span><span class="tc-tag">Chủ nghĩa siêu nhân</span><span class="tc-tag">Chủ nghĩa hậu nhân bản</span></div><div class="tc-preview">Hai trào lưu cố gắng vượt giới hạn nhân loại bằng công nghệ.</div></div></div></div><div class="cat-section" id="nhom4"><div class="cat-head"><div class="cat-head-dot" style="background:#6b4fa0"></div><h2 class="cat-head-title">IV. LAO ĐỘNG, GIA ĐÌNH, NÔ LỆ MỚI</h2><span class="cat-head-n">3 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#6b4fa0" data-cat="nhom4" data-idx="0"><div class="tc-kw">Lao động trong thời tự động hoá</div><div class="tc-tags"><span class="tc-tag de">Work</span><span class="tc-tag de">Automation</span><span class="tc-tag">Lao động</span><span class="tc-tag">Tự động hoá</span></div><div class="tc-preview">AI buộc người làm thích nghi máy hơn là máy phục vụ người.</div></div><div class="topic-card" style="--cc:#6b4fa0" data-cat="nhom4" data-idx="1"><div class="tc-kw">Nô lệ mới đằng sau AI</div><div class="tc-tags"><span class="tc-tag de">new slavery</span><span class="tc-tag de">data labeling</span><span class="tc-tag">Nô lệ mới</span><span class="tc-tag">Lao động vô hình</span></div><div class="tc-preview">Phía sau AI là chuỗi dài exploitation — Hội Thánh xin lỗi vì sự chậm trễ lịch sử.</div></div><div class="topic-card" style="--cc:#6b4fa0" data-cat="nhom4" data-idx="2"><div class="tc-kw">Gia đình và người trẻ</div><div class="tc-tags"><span class="tc-tag de">family</span><span class="tc-tag de">young people</span><span class="tc-tag">Gia đình</span><span class="tc-tag">Người trẻ</span></div><div class="tc-preview">Gia đình là tế bào căn bản; bảo vệ trẻ em khỏi exposure quá sớm.</div></div></div></div><div class="cat-section" id="nhom5"><div class="cat-head"><div class="cat-head-dot" style="background:#8a3a2b"></div><h2 class="cat-head-title">V. CHIẾN TRANH, VÀ VĂN MINH TÌNH YÊU</h2><span class="cat-head-n">3 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#8a3a2b" data-cat="nhom5" data-idx="0"><div class="tc-kw">Just War theory — outdated</div><div class="tc-tags"><span class="tc-tag de">just war</span><span class="tc-tag de">bellum iustum</span><span class="tc-tag">Chiến tranh chính nghĩa</span></div><div class="tc-preview">Lý thuyết just war 'thường được dùng để biện hộ mọi loại chiến tranh' — nay lỗi thời.</div></div><div class="topic-card" style="--cc:#8a3a2b" data-cat="nhom5" data-idx="1"><div class="tc-kw">Vũ khí tự động &amp; AI quân sự</div><div class="tc-tags"><span class="tc-tag de">autonomous weapons</span><span class="tc-tag de">LAWS</span><span class="tc-tag">Vũ khí tự động</span></div><div class="tc-preview">Không thuật toán nào có thể làm chiến tranh trở nên có thể chấp nhận.</div></div><div class="topic-card" style="--cc:#8a3a2b" data-cat="nhom5" data-idx="2"><div class="tc-kw">Năm con đường của Văn Minh Tình Yêu</div><div class="tc-tags"><span class="tc-tag de">civilization of love</span><span class="tc-tag de">Paul VI</span><span class="tc-tag">Văn minh tình yêu</span><span class="tc-tag">Năm con đường</span></div><div class="tc-preview">Đáp ứng tích cực của Đức Lêô XIV: 5 cách mọi người có thể làm phần mình.</div></div></div></div><div class="cat-section" id="nhom6"><div class="cat-head"><div class="cat-head-dot" style="background:#7b3f00"></div><h2 class="cat-head-title">VI. KẾT LUẬN: MAGNIFICAT CHO THỜI ĐẠI AI</h2><span class="cat-head-n">2 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#7b3f00" data-cat="nhom6" data-idx="0"><div class="tc-kw">Bốn cột trụ của đời sống Kitô hữu</div><div class="tc-tags"><span class="tc-tag de">four pillars</span><span class="tc-tag de">Incarnation</span><span class="tc-tag">Bốn cột trụ</span></div><div class="tc-preview">Chương trình đời sống Kitô hữu để định hướng thời đại AI.</div></div><div class="topic-card" style="--cc:#7b3f00" data-cat="nhom6" data-idx="1"><div class="tc-kw">Chứng nhân: Cha Hồng Y Văn Thuận</div><div class="tc-tags"><span class="tc-tag de">Francis-Xavier Nguyễn Văn Thuận</span><span class="tc-tag de">martyrs</span><span class="tc-tag">Cha Hồng Y Phanxicô Xaviê Nguyễn Văn Thuận</span><span class="tc-tag">Chứng nhân Việt Nam</span></div><div class="tc-preview">Một trong những chứng nhân được Đức Lêô XIV nêu tên trong văn kiện.</div></div></div></div></div>
     </section>
 
     <!-- HỌP BÁO -->
@@ -3245,7 +3255,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     </section>
 
     <!-- ══ TOÀN VĂN DỊCH ══ -->
-    <section class="section" id="sec-toan_van">
+    <section class="section active" id="sec-toan_van">
 
       <div class="tv-intro">
         <div class="tv-intro-title">📜 Bản dịch tiếng Việt — Đối chiếu nguyên văn</div>
@@ -3904,7 +3914,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-67">
         <div class="tv-num-col"><div class="tv-num">67</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Hôm nay, trong số các của cải được hướng phổ quát cho mọi người, chúng ta cũng phải bao gồm các hình thức tài sản mới — như bằng sáng chế, thuật toán, các nền tảng kỹ thuật số, hạ tầng công nghệ và dữ liệu. Trong một ngữ cảnh nơi sự giàu có của các quốc gia ngày càng tuỳ thuộc vào tri thức và công nghệ, khi những của cải này vẫn tập trung trong tay một số ít — mà không có các hình thức chia sẻ và tiếp cận thoả đáng — thì một sự mất cân bằng mới được tạo ra mâu thuẫn với đích đến phổ quát của của cải. Ngược lại, nó mở rộng khoảng cách giữa người được bao gồm và người bị loại trừ, giữa những ai có thể tham gia cuộc cách mạng kỹ thuật số và những ai vẫn ở bên lề. Hơn nữa, sự chăm sóc ngôi nhà chung và trách nhiệm của chúng ta đối với người nghèo và các thế hệ tương lai đòi hỏi rằng việc sử dụng các của cải của tạo thành và các khả thể mới do công nghệ đem lại phải được điều tiết theo cách tôn trọng môi trường, tránh lãng phí và ngăn chặn các hình thức bóc lột mới.</div>
+          <div class="tv-text">Hôm nay, trong số các của cải được hướng đến một cách phổ quát cho mọi người, chúng ta cũng phải bao gồm các hình thức tài sản mới — như bằng sáng chế, thuật toán, các nền tảng kỹ thuật số, hạ tầng công nghệ và dữ liệu. Trong một ngữ cảnh nơi sự giàu có của các quốc gia ngày càng tuỳ thuộc vào tri thức và công nghệ, khi những của cải này vẫn tập trung trong tay một số ít — mà không có các hình thức chia sẻ và tiếp cận thoả đáng — thì một sự mất cân bằng mới được tạo ra mâu thuẫn với đích đến phổ quát của của cải. Ngược lại, nó mở rộng khoảng cách giữa người được bao gồm và người bị loại trừ, giữa những ai có thể tham gia cuộc cách mạng kỹ thuật số và những ai vẫn ở bên lề. Hơn nữa, sự chăm sóc ngôi nhà chung và trách nhiệm của chúng ta đối với người nghèo và các thế hệ tương lai đòi hỏi rằng việc sử dụng các của cải của tạo thành và các khả thể mới do công nghệ đem lại phải được điều tiết theo cách tôn trọng môi trường, tránh lãng phí và ngăn chặn các hình thức bóc lột mới.</div>
         </div>
       </div>
 
@@ -4967,7 +4977,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
         <div class="tv-num-col"><div class="tv-num">181</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
           <div class="tv-text">Từ nhãn quan này, Học thuyết Xã hội của Giáo Hội kêu gọi <em>một trách nhiệm chung</em>. Nó yêu cầu các tiến trình này được hướng dẫn với tầm nhìn xa: bởi các <em>định chế</em> có khả năng điều tiết mà không bóp nghẹt, và bảo vệ mà không lấn át; bởi các <em>doanh nghiệp</em> nhìn nhận lao động và phẩm giá như các thước đo thành công; bởi các <em>tổ chức trung gian và các cộng đồng giáo dục</em> tái xây dựng lòng tin và các quan hệ; và bởi các <em>công dân</em> vun trồng trách nhiệm, sự chừng mực, phân định và ý thức về sự thật. Chỉ theo cách này đổi mới mới có thể đích thực phục vụ <em>phát triển toàn diện con người</em> — thay vì trở thành một nguồn loại trừ và thống trị. Và chỉ theo cách này lời hứa của tiến bộ mới có thể được nhìn nhận là đích thực — vì nó được đo dựa trên phẩm giá không thể xâm phạm của mỗi người nam và nữ.</div>
-          <div class="tv-bib"><strong>📖 Tóm kết Chương IV:</strong> Năm lãnh vực cụ thể (sự thật/dân chủ → giáo dục số → phẩm giá lao động → gia đình & người trẻ → nô lệ kỹ thuật số) — tất cả phản ánh một vấn đề nền: nếu công nghệ trở thành tiêu chí tối hậu, con người bị giản lược thành dữ liệu. Đặc biệt: lời xin lỗi về nô lệ §176; "thực dân dữ liệu" §178; lao động ẩn giấu của AI §173.</div>
+          <div class="tv-bib"><strong>📖 Tóm kết Chương IV:</strong> Năm lãnh vực cụ thể (sự thật/dân chủ → giáo dục số → phẩm giá lao động → gia đình &amp; người trẻ → nô lệ kỹ thuật số) — tất cả phản ánh một vấn đề nền: nếu công nghệ trở thành tiêu chí tối hậu, con người bị giản lược thành dữ liệu. Đặc biệt: lời xin lỗi về nô lệ §176; "thực dân dữ liệu" §178; lao động ẩn giấu của AI §173.</div>
         </div>
       </div>
 
@@ -5644,7 +5654,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Dialogue 1 -->
-      <div class="dialogue-pair">
+      <div class="dialogue-pair" id="dlg-0">
         <div class="dlg-user">
           <div class="dlg-user-head">
             <div class="dlg-avatar usr">PN</div>
@@ -5682,7 +5692,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Dialogue 2 -->
-      <div class="dialogue-pair">
+      <div class="dialogue-pair" id="dlg-1">
         <div class="dlg-user">
           <div class="dlg-user-head">
             <div class="dlg-avatar usr">PN</div>
@@ -5734,7 +5744,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 1 -->
-      <div class="crit-card open">
+      <div class="crit-card open" id="crit-0">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">1</div>
           <div class="crit-head-text">
@@ -5753,7 +5763,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 2 -->
-      <div class="crit-card">
+      <div class="crit-card" id="crit-1">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">2</div>
           <div class="crit-head-text">
@@ -5772,7 +5782,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 3 -->
-      <div class="crit-card">
+      <div class="crit-card" id="crit-2">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">3</div>
           <div class="crit-head-text">
@@ -5791,7 +5801,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 4 -->
-      <div class="crit-card">
+      <div class="crit-card" id="crit-3">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">4</div>
           <div class="crit-head-text">
@@ -5810,7 +5820,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 5 -->
-      <div class="crit-card">
+      <div class="crit-card" id="crit-4">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">5</div>
           <div class="crit-head-text">
@@ -5829,7 +5839,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 6 -->
-      <div class="crit-card">
+      <div class="crit-card" id="crit-5">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">6</div>
           <div class="crit-head-text">
@@ -5842,13 +5852,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
           <p>Có hàng nghìn kỹ sư, nhà nghiên cứu, founder Công giáo đang làm việc tại OpenAI, Anthropic, Google DeepMind, Microsoft Research, Meta AI. Nhiều người trong số họ vật lộn với chính những câu hỏi mà <em>Magnifica Humanitas</em> đặt ra. Cộng đồng <em>AI &amp; Faith</em>, <em>Catholic AI Center</em> tại San Francisco, các nỗ lực của Pontifical Academy for Life cùng các nhà công nghệ ("Rome Call for AI Ethics", 2020/2023) — tất cả đều tồn tại.</p>
           <p>Văn kiện không trích dẫn một nhà công nghệ Công giáo nào. Không có dấu hiệu cho thấy quá trình soạn thảo đã tham vấn các nhóm này. So sánh: <em>Laudato Si'</em> đã trích dẫn các nhà khoa học khí hậu, các tài liệu của IPCC, các tư duy Patriarchate of Constantinople. <em>Caritas in Veritate</em> đã đối thoại với kinh tế học hiện đại. <em>Magnifica Humanitas</em> dường như được soạn chủ yếu từ truyền thống huấn quyền và một số tài liệu Holy See (Antiqua et Nova, 2025) — không từ thực tế làm việc với AI.</p>
           <p>Đây là một <em>methodological deficit</em>. Nguyên tắc bổ trợ (§70) đòi hỏi rằng những người ở "cấp thấp hơn và gần thực tại hơn" phải tham gia phân định. Khi viết về AI, "cấp gần thực tại nhất" là những người đang xây dựng nó. Sự vắng mặt của họ trong văn bản (không qua trích dẫn, không qua case study) làm yếu chính tính áp dụng của nguyên tắc bổ trợ mà văn kiện đề cao.</p>
-          <div class="crit-ref"><strong>Tài liệu tham khảo:</strong> Rome Call for AI Ethics (28.02.2020, ký bổ sung 2023); Pontifical Academy for Life & Microsoft/IBM/FAO/Italian Government; Catholic AI Center (catholicaicenter.com).</div>
+          <div class="crit-ref"><strong>Tài liệu tham khảo:</strong> Rome Call for AI Ethics (28.02.2020, ký bổ sung 2023); Pontifical Academy for Life &amp; Microsoft/IBM/FAO/Italian Government; Catholic AI Center (catholicaicenter.com).</div>
           <div class="crit-tags"><span class="crit-tag">Phương pháp luận</span><span class="crit-tag">Synodality</span></div>
         </div>
       </div>
 
       <!-- Critique 7 -->
-      <div class="crit-card">
+      <div class="crit-card" id="crit-6">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">7</div>
           <div class="crit-head-text">
@@ -5867,7 +5877,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 8 -->
-      <div class="crit-card">
+      <div class="crit-card" id="crit-7">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">8</div>
           <div class="crit-head-text">
@@ -5886,7 +5896,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 9 -->
-      <div class="crit-card">
+      <div class="crit-card" id="crit-8">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">9</div>
           <div class="crit-head-text">
@@ -5905,7 +5915,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 10 -->
-      <div class="crit-card">
+      <div class="crit-card" id="crit-9">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">10</div>
           <div class="crit-head-text">
@@ -5924,7 +5934,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 11 -->
-      <div class="crit-card">
+      <div class="crit-card" id="crit-10">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">11</div>
           <div class="crit-head-text">
@@ -5943,13 +5953,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
             <li><em>Surveillance AI</em> (nhận diện khuôn mặt, social credit) — câu hỏi chính là quyền riêng tư và áp bức chính trị.</li>
           </ul>
           <p>Mỗi loại đặt ra vấn đề đạo đức khác nhau và đòi hỏi khung điều tiết khác nhau. Văn kiện đôi khi nói như thể tất cả "AI" đều cùng một thực thể. Điều này làm cho các nguyên tắc trở nên khó áp dụng cụ thể. Một thông điệp tương lai nên phân biệt rõ.</p>
-          <div class="crit-ref"><strong>Phân loại tham khảo:</strong> Russell & Norvig, <em>Artificial Intelligence: A Modern Approach</em> (4th ed., 2020); EU AI Act 2024 phân loại risk-based.</div>
+          <div class="crit-ref"><strong>Phân loại tham khảo:</strong> Russell &amp; Norvig, <em>Artificial Intelligence: A Modern Approach</em> (4th ed., 2020); EU AI Act 2024 phân loại risk-based.</div>
           <div class="crit-tags"><span class="crit-tag tech">Phân loại AI</span><span class="crit-tag">Khái niệm học</span></div>
         </div>
       </div>
 
       <!-- Critique 12 -->
-      <div class="crit-card">
+      <div class="crit-card" id="crit-11">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">12</div>
           <div class="crit-head-text">
@@ -6020,8 +6030,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <div class="modal-icon">🔐</div>
     <h2 class="modal-title">Đăng nhập chỉnh sửa</h2>
     <p class="modal-sub">Nhập mật khẩu để kích hoạt quyền chỉnh sửa nội dung</p>
-    <input type="password" class="modal-input" id="pwdInput"
-      placeholder="Mật khẩu…" onkeydown="if(event.key==='Enter')doLogin()">
+    <input type="password" class="modal-input" id="pwdInput" placeholder="Mật khẩu…" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="modal-btn" onclick="doLogin()">Xác nhận</button>
     <p class="modal-error" id="loginErr">Mật khẩu không đúng. Vui lòng thử lại.</p>
     <button class="modal-cancel" onclick="closeLogin()">Hủy</button>
@@ -6736,6 +6745,15 @@ function buildIndex() {
       text: dp.textContent
     });
   });
+  document.querySelectorAll('.tv-card').forEach(tv => {
+    const num = tv.querySelector('.tv-num')?.textContent?.trim() || '?';
+    IDX.push({
+      id: tv.id,
+      tab: 'toan_van',
+      label: '§ '+num+' — '+(tv.querySelector('.tv-text')?.textContent?.trim().slice(0,80) || ''),
+      text: tv.textContent
+    });
+  });
 }
 
 /* ══ TABS ══ */
@@ -6782,24 +6800,144 @@ function hl(text,q){
   const re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
   return text.replace(re,'<mark style="background:rgba(201,149,43,.25);color:var(--gold);border-radius:2px;padding:0 1px">$1</mark>');
 }
-const TAB_LABEL={chuong:'Chương',chu_diem:'Chủ điểm',tu_khoa:'Từ khoá',nan_de:'Nan đề',cau_hoi:'Câu hỏi',theo_chu_de:'Chủ đề',hop_bao:'Họp báo',footnotes:'Chú thích',phan_bien:'Phản biện AI'};
-const TAB_COLOR={chuong:'var(--gold)',chu_diem:'var(--navy2)',tu_khoa:'var(--teal)',nan_de:'var(--coral)',cau_hoi:'var(--gold)',theo_chu_de:'var(--violet)',hop_bao:'var(--violet)',footnotes:'var(--ink3)',phan_bien:'var(--violet)'};
+const TAB_LABEL={chuong:'Chương',chu_diem:'Chủ điểm',tu_khoa:'Từ khoá',nan_de:'Nan đề',cau_hoi:'Câu hỏi',theo_chu_de:'Chủ đề',hop_bao:'Họp báo',footnotes:'Chú thích',phan_bien:'Phản biện AI',toan_van:'Toàn văn dịch'};
+const TAB_COLOR={chuong:'var(--gold)',chu_diem:'var(--navy2)',tu_khoa:'var(--teal)',nan_de:'var(--coral)',cau_hoi:'var(--gold)',theo_chu_de:'var(--violet)',hop_bao:'var(--violet)',footnotes:'var(--ink3)',phan_bien:'var(--violet)',toan_van:'#3a7a50'};
+const TAB_ORDER=['chuong','toan_van','chu_diem','tu_khoa','nan_de','cau_hoi','theo_chu_de','hop_bao','footnotes','phan_bien'];
+
+// Highlight multiple terms in a single text, ignoring diacritics
+function hlMulti(text, terms){
+  if(!terms || !terms.length) return text;
+  // Build regex with all terms (longer first to avoid overlap)
+  const sorted = [...terms].filter(Boolean).sort((a,b)=>b.length-a.length);
+  if(!sorted.length) return text;
+  // Map normalized to original positions via index walk
+  const norm_text = norm(text);
+  const matches = [];
+  for(const t of sorted){
+    if(!t) continue;
+    let pos = 0;
+    while(pos < norm_text.length){
+      const found = norm_text.indexOf(t, pos);
+      if(found < 0) break;
+      matches.push([found, found + t.length]);
+      pos = found + t.length;
+    }
+  }
+  if(!matches.length) return text;
+  // Sort and merge overlapping
+  matches.sort((a,b)=>a[0]-b[0]);
+  const merged = [matches[0]];
+  for(let i=1; i<matches.length; i++){
+    const [s,e] = matches[i];
+    const last = merged[merged.length-1];
+    if(s <= last[1]) last[1] = Math.max(last[1], e);
+    else merged.push([s,e]);
+  }
+  // Walk original text and reconstruct
+  let result = '';
+  let cursor = 0;
+  for(const [s,e] of merged){
+    result += escapeHTML(text.slice(cursor, s));
+    result += '<mark>' + escapeHTML(text.slice(s, e)) + '</mark>';
+    cursor = e;
+  }
+  result += escapeHTML(text.slice(cursor));
+  return result;
+}
+
+function escapeHTML(s){
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// Extract snippet around first match of any term (~70 chars before, ~110 after)
+function extractSnippet(text, terms, beforeChars=70, afterChars=130){
+  const cleaned = text.replace(/\s+/g, ' ').trim();
+  const norm_text = norm(cleaned);
+  let firstPos = -1;
+  for(const t of terms){
+    if(!t) continue;
+    const p = norm_text.indexOf(t);
+    if(p >= 0 && (firstPos < 0 || p < firstPos)) firstPos = p;
+  }
+  if(firstPos < 0) return cleaned.slice(0, beforeChars + afterChars);
+  const start = Math.max(0, firstPos - beforeChars);
+  const end = Math.min(cleaned.length, firstPos + afterChars);
+  let snippet = cleaned.slice(start, end);
+  if(start > 0) snippet = '… ' + snippet;
+  if(end < cleaned.length) snippet = snippet + ' …';
+  return snippet;
+}
 
 function onSearch(v){
-  searchQ=v;
-  document.getElementById('clearBtn').classList.toggle('vis',v.length>0);
-  if(v.length<1){hideSugg();applyFilters();return;}
-  const q=norm(v);
-  const hits=IDX.filter(it=>norm(it.text).includes(q)).slice(0,12);
-  if(!hits.length){hideSugg();}else{
-    const box=document.getElementById('suggestions');
-    box.innerHTML=hits.map(it=>`<div class="sugg-item" onclick="jumpTo('${it.id}','${it.tab}')">
-      <span class="sugg-dot" style="background:${TAB_COLOR[it.tab]||'var(--navy2)'}"></span>
-      <span class="sugg-label">${hl(it.label,norm(v))}</span>
-      <span class="sugg-type">${TAB_LABEL[it.tab]||''}</span>
-    </div>`).join('');
+  searchQ = v;
+  document.getElementById('clearBtn').classList.toggle('vis', v.length > 0);
+  if(v.length < 1){ hideSugg(); applyFilters(); return; }
+
+  // Split query into words (multi-word AND search)
+  const rawTerms = norm(v).split(/\s+/).filter(t => t.length > 0);
+  if(!rawTerms.length){ hideSugg(); applyFilters(); return; }
+
+  // AND matching: every term must be present in text
+  const hits = IDX.filter(it => {
+    const nt = norm(it.text);
+    return rawTerms.every(t => nt.includes(t));
+  });
+
+  const box = document.getElementById('suggestions');
+
+  if(!hits.length){
+    box.innerHTML = `<div class="sugg-empty">
+      <strong>Không tìm thấy kết quả</strong>
+      Không có đoạn nào chứa đồng thời tất cả các từ:
+      ${rawTerms.map(t=>`<code style="background:var(--gold-bg);color:var(--gold);padding:1px 6px;border-radius:3px;margin:0 2px">${escapeHTML(t)}</code>`).join('')}
+    </div>`;
     box.classList.add('vis');
+    applyFilters();
+    return;
   }
+
+  // Group results by tab
+  const grouped = {};
+  for(const h of hits){
+    if(!grouped[h.tab]) grouped[h.tab] = [];
+    grouped[h.tab].push(h);
+  }
+
+  // Build header
+  let html = `<div class="sugg-header">
+    <span class="sugg-header-count">${hits.length}</span>
+    <span>kết quả trong ${Object.keys(grouped).length} chuyên mục</span>
+    <span class="sugg-header-terms">tìm: ${rawTerms.map(t=>`<code>${escapeHTML(t)}</code>`).join(' + ')}</span>
+  </div>`;
+
+  // Build grouped list in canonical order
+  for(const tab of TAB_ORDER){
+    if(!grouped[tab]) continue;
+    const items = grouped[tab];
+    const color = TAB_COLOR[tab] || 'var(--navy2)';
+    html += `<div class="sugg-group">
+      <div class="sugg-group-head">
+        <span class="sugg-group-dot" style="background:${color}"></span>
+        <span>${TAB_LABEL[tab] || tab}</span>
+        <span class="sugg-group-count">${items.length}</span>
+      </div>`;
+    for(const it of items){
+      const snippet = extractSnippet(it.text, rawTerms);
+      html += `<div class="sugg-item" onclick="jumpTo('${it.id}','${it.tab}')">
+        <div class="sugg-item-top">
+          <span class="sugg-dot" style="background:${color}"></span>
+          <span class="sugg-label">${hlMulti(it.label, rawTerms)}</span>
+          <span class="sugg-type">${TAB_LABEL[it.tab] || ''}</span>
+        </div>
+        <div class="sugg-snippet">${hlMulti(snippet, rawTerms)}</div>
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  box.innerHTML = html;
+  box.classList.add('vis');
+  box.scrollTop = 0;
   applyFilters();
 }
 function hideSugg(){document.getElementById('suggestions').classList.remove('vis')}
@@ -6957,30 +7095,160 @@ function doLogin(){
   else{document.getElementById('loginErr').classList.add('vis');document.getElementById('pwdInput').value='';document.getElementById('pwdInput').focus();}
 }
 document.getElementById('pwdInput').addEventListener('keydown',e=>{if(e.key==='Escape')closeLogin();});
+/* ══ COMPREHENSIVE EDIT SELECTORS ══ */
+const EDITABLE_SELECTORS = [
+  // Masthead / Header
+  '.ms-eyebrow','.ms-title','.ms-title-vi','.ms-subtitle','.ms-author','.ms-body','.ms-position',
+  // General cards
+  '.card-title','.card-desc',
+  '.arg-list li','.debate-list li',
+  '.definition','.citation',
+  '.warning-box','.context-box','.src-badge',
+  '.ref-block li','.fn-chip','.fn-more',
+  // Chapter view
+  '.chapter-title','.chapter-summary',
+  '.muc-doan','.muc-ten','.muc-body',
+  '.chapter-trich',
+  // Topic cards
+  '.tc-kw','.tc-preview','.cat-head-title',
+  // Press conference (Họp báo)
+  '.hb-intro','.hb-name','.hb-role','.hb-thutu',
+  '.hb-trongtam','.hb-tomtat','.hb-trich',
+  '.hb-diem-list li','.hb-qs-title','.hb-qs-name','.hb-qs-body',
+  // Side panel
+  '.panel-title','.p-kw','.p-tag',
+  '.p-arg-t','.p-quote','.p-quote-ref',
+  '.obj-text','.resp-text','.impl-text',
+  // Footnotes tab
+  '.fn-content','.fn-intro',
+  // Toàn văn dịch
+  '.tv-intro p','.tv-intro-title','.tv-chap-title','.tv-chap-range',
+  '.tv-text','.tv-bib',
+  // Phản biện AI
+  '.pb-intro p','.pb-intro-title','.pb-part-title','.pb-part-sub',
+  '.crit-title','.crit-thesis','.crit-body p',
+  '.crit-quote','.crit-ref',
+  '.dlg-q-text','.dlg-who','.dlg-stamp',
+  '.dlg-ai-body p','.dlg-ai-body h4','.dlg-ai-body li',
+  '.dlg-ai-body blockquote',
+  '.pb-final-title','.pb-final-body p','.pb-disclaimer',
+  // Footer
+  '.app-footer p'
+];
+
 function enterEdit(){
-  editMode=true;
+  editMode = true;
   document.getElementById('editBar').classList.add('active');
-  const btn=document.querySelector('.ctrl-btn[onclick="openLogin()"]');
-  btn.textContent='✎ Đang sửa — Thoát';btn.classList.add('active');
-  document.querySelectorAll('.card-title,.card-desc,.arg-list li,.definition,.citation,.ms-body,.ms-position,.chapter-title,.chapter-summary,.muc-body,.fn-content').forEach(el=>{
-    el.setAttribute('contenteditable','true');
-    el.setAttribute('data-original',el.innerHTML);
+  const btn = document.querySelector('.ctrl-btn[onclick="openLogin()"]');
+  btn.textContent = '✎ Đang sửa — Thoát';
+  btn.classList.add('active');
+
+  document.querySelectorAll(EDITABLE_SELECTORS.join(',')).forEach(el => {
+    el.setAttribute('contenteditable', 'true');
+    el.setAttribute('data-original', el.innerHTML);
   });
+
+  // Count for user feedback
+  const count = document.querySelectorAll('[contenteditable="true"]').length;
+  console.log('✓ Edit mode: ' + count + ' elements editable');
 }
+
 function exitEdit(){
-  editMode=false;
+  editMode = false;
   document.getElementById('editBar').classList.remove('active');
-  const btn=document.querySelector('.ctrl-btn[onclick="openLogin()"]');
-  btn.textContent='✎ Chỉnh sửa';btn.classList.remove('active');
-  document.querySelectorAll('[contenteditable="true"]').forEach(el=>el.removeAttribute('contenteditable'));
-}
-function saveEdits(){
-  const edits={};
-  document.querySelectorAll('[contenteditable="true"]').forEach((el,i)=>{
-    if(el.innerHTML!==el.dataset.original)edits['el_'+i]={content:el.innerHTML};
+  const btn = document.querySelector('.ctrl-btn[onclick="openLogin()"]');
+  btn.textContent = '✎ Chỉnh sửa';
+  btn.classList.remove('active');
+  document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+    el.removeAttribute('contenteditable');
+    el.removeAttribute('data-original');
   });
-  localStorage.setItem('mh-edits-'+location.pathname,JSON.stringify(edits));
-  alert('✅ Đã lưu thay đổi vào bộ nhớ trình duyệt này.');
+}
+
+/* ══ SAVE OVER ORIGINAL FILE ══ */
+// Remember the file handle so user doesn't have to pick file each time
+let fileHandle = null;
+
+// Serialize current document to clean HTML (no edit-mode artifacts)
+function getCleanHTML(){
+  const docClone = document.documentElement.cloneNode(true);
+  // Remove all edit-mode attributes
+  docClone.querySelectorAll('[contenteditable]').forEach(el => {
+    el.removeAttribute('contenteditable');
+  });
+  docClone.querySelectorAll('[data-original]').forEach(el => {
+    el.removeAttribute('data-original');
+  });
+  // Reset edit bar to inactive
+  const bar = docClone.querySelector('#editBar');
+  if(bar) bar.classList.remove('active');
+  // Reset edit button text
+  const btn = docClone.querySelector('.ctrl-btn[onclick="openLogin()"]');
+  if(btn){
+    btn.textContent = '✎ Chỉnh sửa';
+    btn.classList.remove('active');
+  }
+  // Close suggestions if open
+  const sugg = docClone.querySelector('#suggestions');
+  if(sugg) sugg.classList.remove('vis');
+  // Clear search input
+  const searchInput = docClone.querySelector('#searchInput');
+  if(searchInput) searchInput.value = '';
+  // Close any open modals or side panels
+  const modal = docClone.querySelector('#loginModal');
+  if(modal) modal.classList.remove('open');
+  const overlay = docClone.querySelector('#overlay');
+  if(overlay) overlay.classList.remove('open');
+  const panel = docClone.querySelector('#sidePanel');
+  if(panel) panel.classList.remove('open');
+  return '<!DOCTYPE html>\n' + docClone.outerHTML;
+}
+
+async function saveEdits(){
+  const html = getCleanHTML();
+  const defaultName = (location.pathname.split('/').pop() || 'Magnifica_Humanitas_map.html').replace(/[#?].*$/, '');
+
+  // Try modern File System Access API (Chrome / Edge / Opera / Brave)
+  if('showSaveFilePicker' in window){
+    try {
+      // If we don't have a handle yet, ask user to choose target file
+      if(!fileHandle){
+        fileHandle = await window.showSaveFilePicker({
+          suggestedName: defaultName,
+          types: [{
+            description: 'HTML file',
+            accept: { 'text/html': ['.html', '.htm'] }
+          }]
+        });
+      }
+      // Write the HTML to that file
+      const writable = await fileHandle.createWritable();
+      await writable.write(html);
+      await writable.close();
+      // Also save to localStorage as backup
+      try { localStorage.setItem('mh-last-saved', new Date().toISOString()); } catch(e){}
+      alert('✅ Đã LƯU ĐÈ thành công lên file:\n\n' + fileHandle.name + '\n\nĐóng và mở lại file để xem kết quả.');
+      return;
+    } catch(err) {
+      if(err.name === 'AbortError') return; // User canceled the dialog
+      console.error('FS Access API error:', err);
+      // Reset handle so next attempt re-prompts
+      fileHandle = null;
+      // Fall through to download fallback
+    }
+  }
+
+  // Fallback: trigger download (Safari, Firefox, older browsers)
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = defaultName;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  alert('💾 Trình duyệt của cha không hỗ trợ ghi đè trực tiếp.\n\nFile đã được TẢI XUỐNG với tên: ' + defaultName + '\n\nVui lòng tự thay thế file gốc bằng file vừa tải về.\n\n(Để có thể ghi đè trực tiếp, dùng Chrome / Edge / Opera / Brave)');
 }
 
 /* ══ KEYBOARD ══ */
@@ -6993,5 +7261,6 @@ document.addEventListener('keydown',e=>{
 buildTheoChude();
 buildIndex();
 </script>
-</body>
-</html>
+
+
+</body></html>
