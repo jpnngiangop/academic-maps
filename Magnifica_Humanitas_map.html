@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="vi"><head>
+<html lang="vi">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Magnifica Humanitas — Bản đồ học thuật</title>
@@ -573,7 +574,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 <!-- EDIT BAR -->
 <div class="edit-mode-bar" id="editBar">
   <span class="edit-badge">✎ EDIT MODE</span>
-  <span style="opacity:.85">Click vào bất cứ đoạn text nào để sửa — bao gồm cả Toàn văn dịch, Phản biện AI, footnotes...</span>
+  <span style="opacity:.85">MỌI ký tự đều sửa được — kể cả tab labels, nav links, control buttons. Click 1 cái sẽ vừa đặt cursor để sửa vừa fire action.</span>
   <div class="edit-mode-bar-actions">
     <button class="edit-action-btn" onclick="saveEdits()" title="Ghi đè file gốc (Chrome/Edge/Opera) hoặc download (Safari/Firefox)">💾 Lưu đè file</button>
     <button class="edit-action-btn" onclick="exitEdit()">✕ Thoát</button>
@@ -584,22 +585,24 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 <div class="searchbar">
   <div class="search-wrap">
     <span class="search-icon-l">🔍</span>
-    <input type="text" id="searchInput" placeholder="Tìm kiếm đa ngôn ngữ — nhập nhiều từ cách nhau bằng dấu cách (vd: 'Babel hiệp thông')" autocomplete="off" spellcheck="false" oninput="onSearch(this.value)" onkeydown="onSearchKey(event)">
+    <input type="text" id="searchInput" placeholder="Tìm kiếm — nhập trọn cụm chữ, không phân biệt hoa thường, không phân biệt dấu (vd: 'tri tue nhan tao')"
+      autocomplete="off" spellcheck="false"
+      oninput="onSearch(this.value)" onkeydown="onSearchKey(event)">
     <button class="search-clear" id="clearBtn" onclick="clearSearch()">✕</button>
     <div class="suggestions" id="suggestions"></div>
   </div>
-  <span class="search-hint">/ để tìm · nhiều từ = AND</span>
+  <span class="search-hint">/ để tìm · trọn cụm chữ</span>
 </div>
 
 <!-- LAYOUT -->
 <div class="page-layout">
   <nav class="sidenav" id="sidenav">
     <div class="nav-section-label">Cấu trúc tài liệu</div>
-    <div id="navCats"><a class="nav-link" href="#nhom1" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#c9952b"></div><div class="nav-name">I. NỀN TẢNG: BABEL HAY GIÊRUSALEM</div><div class="nav-count">2</div></a><a class="nav-link" href="#nhom2" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#2b8a7a"></div><div class="nav-name">II. PHẨM GIÁ NHÂN VỊ &amp; NĂM NGUYÊN TẮC HTXH</div><div class="nav-count">2</div></a><a class="nav-link" href="#nhom3" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#1a5276"></div><div class="nav-name">III. AI &amp; MÔ THỨC KỸ TRỊ</div><div class="nav-count">3</div></a><a class="nav-link" href="#nhom4" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#6b4fa0"></div><div class="nav-name">IV. LAO ĐỘNG, GIA ĐÌNH, NÔ LỆ MỚI</div><div class="nav-count">3</div></a><a class="nav-link" href="#nhom5" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#8a3a2b"></div><div class="nav-name">V. CHIẾN TRANH, VÀ VĂN MINH TÌNH YÊU</div><div class="nav-count">3</div></a><a class="nav-link" href="#nhom6" onclick="switchTab('theo_chu_de',null)"><div class="nav-dot" style="background:#7b3f00"></div><div class="nav-name">VI. KẾT LUẬN: MAGNIFICAT CHO THỜI ĐẠI AI</div><div class="nav-count">2</div></a></div>
+    <div id="navCats"></div>
     <div class="nav-divider"></div>
     <div class="nav-section-label">Phân loại nội dung</div>
-    <a class="nav-tab-link" onclick="switchTab('chuong',this)" data-tab="chuong"><span class="nav-icon">📖</span>Chương <span class="nav-count">7</span></a>
-    <a class="nav-tab-link tab-active" onclick="switchTab('chu_diem',this)" data-tab="chu_diem"><span class="nav-icon">📌</span>Chủ điểm <span class="nav-count">13</span></a>
+    <a class="nav-tab-link tab-active" onclick="switchTab('chuong',this)" data-tab="chuong"><span class="nav-icon">📖</span>Chương <span class="nav-count">7</span></a>
+    <a class="nav-tab-link" onclick="switchTab('chu_diem',this)" data-tab="chu_diem"><span class="nav-icon">📌</span>Chủ điểm <span class="nav-count">13</span></a>
     <a class="nav-tab-link" onclick="switchTab('tu_khoa',this)" data-tab="tu_khoa"><span class="nav-icon">🗝</span>Từ khoá <span class="nav-count">30</span></a>
     <a class="nav-tab-link" onclick="switchTab('nan_de',this)" data-tab="nan_de"><span class="nav-icon">⚡</span>Nan đề <span class="nav-count">8</span></a>
     <a class="nav-tab-link" onclick="switchTab('cau_hoi',this)" data-tab="cau_hoi"><span class="nav-icon">❓</span>Câu hỏi <span class="nav-count">15</span></a>
@@ -612,8 +615,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 
   <main class="main-content">
     <div class="tabs-bar" id="tabsBar">
-      <button class="tab-btn" data-tab="chuong" onclick="switchTab('chuong',this)">📖 Chương <span class="tab-chip">7</span></button>
-      <button class="tab-btn active" data-tab="chu_diem" onclick="switchTab('chu_diem',this)">📌 Chủ điểm <span class="tab-chip">13</span></button>
+      <button class="tab-btn active" data-tab="chuong" onclick="switchTab('chuong',this)">📖 Chương <span class="tab-chip">7</span></button>
+      <button class="tab-btn" data-tab="chu_diem" onclick="switchTab('chu_diem',this)">📌 Chủ điểm <span class="tab-chip">13</span></button>
       <button class="tab-btn" data-tab="tu_khoa" onclick="switchTab('tu_khoa',this)">🗝 Từ khoá <span class="tab-chip">30</span></button>
       <button class="tab-btn" data-tab="nan_de" onclick="switchTab('nan_de',this)">⚡ Nan đề <span class="tab-chip">8</span></button>
       <button class="tab-btn" data-tab="cau_hoi" onclick="switchTab('cau_hoi',this)">❓ Câu hỏi <span class="tab-chip">15</span></button>
@@ -625,7 +628,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     </div>
 
     <!-- CHƯƠNG -->
-    <section class="section" id="sec-chuong">
+    <section class="section active" id="sec-chuong">
       <div class="sec-toolbar">
         <div class="tb-left"><span style="font-size:.84rem;color:var(--ink2)">📖 Cấu trúc 7 phần: Giới thiệu + 5 chương + Kết luận. Tổng 245 đoạn (1–245).</span></div>
       </div>
@@ -691,7 +694,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
             <span class="muc-doan">§ 28–44</span>
             <span class="muc-ten">Sự phát triển HTXH từ Lêô XIII đến nay</span>
           </div>
-          <div class="muc-body">Lược đồ: Rerum Novarum (1891) → Quadragesimo Anno (1931, Piô XI) → Piô XII → Mater et Magistra &amp; Pacem in Terris (Gioan XXIII) → Gaudium et Spes &amp; Dignitatis Humanae (VII) → Populorum Progressio &amp; Octogesima Adveniens (Phaolô VI) → Laborem Exercens, Sollicitudo Rei Socialis, Centesimus Annus (Gioan Phaolô II) → Caritas in Veritate (Bênêđictô XVI) → Evangelii Gaudium, Laudato Si', Fratelli Tutti, Dilexit Nos (Phanxicô).</div>
+          <div class="muc-body">Lược đồ: Rerum Novarum (1891) → Quadragesimo Anno (1931, Piô XI) → Piô XII → Mater et Magistra & Pacem in Terris (Gioan XXIII) → Gaudium et Spes & Dignitatis Humanae (VII) → Populorum Progressio & Octogesima Adveniens (Phaolô VI) → Laborem Exercens, Sollicitudo Rei Socialis, Centesimus Annus (Gioan Phaolô II) → Caritas in Veritate (Bênêđictô XVI) → Evangelii Gaudium, Laudato Si', Fratelli Tutti, Dilexit Nos (Phanxicô).</div>
         </div><div class="muc-item">
           <div class="muc-head">
             <span class="muc-doan">§ 45</span>
@@ -817,7 +820,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
             <span class="muc-doan">§ 118–126</span>
             <span class="muc-ten">Giới hạn, trái tim, sự cao cả của con người</span>
           </div>
-          <div class="muc-body">Giới hạn không phải khuyết tật cần sửa, mà là nơi nhân tính trưởng thành. Frankl, Beethoven, Picasso (Guernica), Schindler's List, MLK, Mandela, Maximilian Kolbe, Romero, Văn Thuận — các chứng từ. ⭐ Trích cha Hồng Y Phanxicô Xaviê Nguyễn Văn Thuận (n. 125).</div>
+          <div class="muc-body">Giới hạn không phải khuyết tật cần sửa, mà là nơi nhân tính trưởng thành. Frankl, Beethoven, Picasso (Guernica), Schindler's List, MLK, Mandela, Maximilian Kolbe, Romero, Văn Thuận — các chứng từ. ⭐ Trích Đức Hồng Y Phanxicô Xaviê Nguyễn Văn Thuận (n. 125).</div>
         </div><div class="muc-item">
           <div class="muc-head">
             <span class="muc-doan">§ 127–128</span>
@@ -971,7 +974,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     </section>
 
     <!-- CHỦ ĐIỂM -->
-    <section class="section active" id="sec-chu_diem">
+    <section class="section" id="sec-chu_diem">
       <div class="sec-toolbar">
         <div class="tb-left">
           <button class="tb-btn" onclick="expandSection('chu_diem')">⊞ Mở tất cả</button>
@@ -989,7 +992,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <span class="toggle-arrow">▸</span>
   </div>
   <div class="card-body">
-    <ol class="arg-list"><li>Lựa chọn căn bản của thời đại AI không phải 'có' hay 'không' với công nghệ, mà giữa <span class="kw-inline" onclick="jumpToKw(&quot;Babel&quot;)">việc xây Tháp Babel</span> và việc trùng tu Giêrusalem (n. 9).</li><li>Babel = đồng nhất hoá, không quy chiếu Thiên Chúa, kiêu hãnh tự đủ — kết cục là phân tán chứ không hiệp nhất (n. 7).</li><li>Giêrusalem-Nehemia = mọi người được phân công 'phần tường của mình', trật tự công việc được tổ chức trên cầu nguyện và lắng nghe (n. 8).</li><li>Hình ảnh Augustinô (De civ. Dei XIV,28): 'Hai tình yêu đã xây hai thành đô' — việc xây Babel hay trùng tu Giêrusalem bắt đầu trong mỗi trái tim (n. 130).</li></ol>
+    <ol class="arg-list"><li>Lựa chọn căn bản của thời đại AI không phải 'có' hay 'không' với công nghệ, mà giữa <span class='kw-inline' onclick='jumpToKw("Babel")'>việc xây Tháp Babel</span> và việc trùng tu Giêrusalem (n. 9).</li><li>Babel = đồng nhất hoá, không quy chiếu Thiên Chúa, kiêu hãnh tự đủ — kết cục là phân tán chứ không hiệp nhất (n. 7).</li><li>Giêrusalem-Nehemia = mọi người được phân công 'phần tường của mình', trật tự công việc được tổ chức trên cầu nguyện và lắng nghe (n. 8).</li><li>Hình ảnh Augustinô (De civ. Dei XIV,28): 'Hai tình yêu đã xây hai thành đô' — việc xây Babel hay trùng tu Giêrusalem bắt đầu trong mỗi trái tim (n. 130).</li></ol>
     <blockquote class="citation">The primary choice is not between a 'yes' or 'no' to technology, but rather between constructing Babel or rebuilding Jerusalem.</blockquote>
     <div class="source-row"><span class="src-label">Nguồn:</span><span class="src-badge">Magnifica Humanitas, n. 9</span><span class="src-badge">n. 130</span><span class="src-badge">Augustinô, De civitate Dei XIV, 28</span></div>
     <div class="fn-refs-row"><span class="fn-refs-label">Chú thích liên quan:</span><span class="fn-chip" onclick="jumpToFn(139)">[139]</span></div>
@@ -1005,7 +1008,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <span class="toggle-arrow">▸</span>
   </div>
   <div class="card-body">
-    <ol class="arg-list"><li>Mọi người được tạo dựng theo hình ảnh và họa ảnh <span class="kw-inline" onclick="jumpToKw(&quot;Triune God&quot;)">Thiên Chúa Ba Ngôi</span> (St 1,26-27, n. 50).</li><li>Bốn tầng phẩm giá: luân lý / xã hội / hiện sinh / hữu thể — cấp 'ontological' là không thể tổn hại (n. 52).</li><li><em>Dignitas Infinita</em> (2024): 'Mọi người sở hữu một phẩm giá vô hạn, không thể chuyển nhượng' — bất chấp mọi tình huống (n. 53).</li><li>Lý do của vô hạn: tình yêu của Thiên Chúa kêu gọi vào tình bạn là vô hạn và vô điều kiện (n. 53, dẫn GPII).</li></ol>
+    <ol class="arg-list"><li>Mọi người được tạo dựng theo hình ảnh và họa ảnh <span class='kw-inline' onclick='jumpToKw("Triune God")'>Thiên Chúa Ba Ngôi</span> (St 1,26-27, n. 50).</li><li>Bốn tầng phẩm giá: luân lý / xã hội / hiện sinh / hữu thể — cấp 'ontological' là không thể tổn hại (n. 52).</li><li><em>Dignitas Infinita</em> (2024): 'Mọi người sở hữu một phẩm giá vô hạn, không thể chuyển nhượng' — bất chấp mọi tình huống (n. 53).</li><li>Lý do của vô hạn: tình yêu của Thiên Chúa kêu gọi vào tình bạn là vô hạn và vô điều kiện (n. 53, dẫn GPII).</li></ol>
     <blockquote class="citation">Every human person possesses an infinite dignity, inalienably grounded in his or her very being.</blockquote>
     <div class="source-row"><span class="src-label">Nguồn:</span><span class="src-badge">MH n. 50-53</span><span class="src-badge">Dignitas Infinita (DDF, 2024) số 1, 7-8</span><span class="src-badge">GS 22</span></div>
     <div class="fn-refs-row"><span class="fn-refs-label">Chú thích liên quan:</span><span class="fn-chip" onclick="jumpToFn(52)">[52]</span> <span class="fn-chip" onclick="jumpToFn(60)">[60]</span> <span class="fn-chip" onclick="jumpToFn(61)">[61]</span> <span class="fn-chip" onclick="jumpToFn(62)">[62]</span> <span class="fn-chip" onclick="jumpToFn(63)">[63]</span></div>
@@ -1021,7 +1024,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <span class="toggle-arrow">▸</span>
   </div>
   <div class="card-body">
-    <ol class="arg-list"><li><span class="kw-inline" onclick="jumpToKw(&quot;Common good&quot;)">Công ích</span>: tổng thể những điều kiện xã hội cho phép mỗi người đạt viên mãn (GS 26, n. 60).</li><li><span class="kw-inline" onclick="jumpToKw(&quot;Universal destination&quot;)">Đích đến phổ quát của của cải</span>: nay bao gồm cả thuật toán, dữ liệu, nền tảng kỹ thuật số (n. 67).</li><li><span class="kw-inline" onclick="jumpToKw(&quot;Subsidiarity&quot;)">Bổ trợ</span>: trong thế giới số, 'cấp cao nhất' không phải Nhà nước mà là các đại gia công nghệ (n. 71).</li><li><span class="kw-inline" onclick="jumpToKw(&quot;Solidarity&quot;)">Liên đới</span>: vừa là nguyên tắc khách quan, vừa là một nhân đức kiên trì (n. 75).</li><li><span class="kw-inline" onclick="jumpToKw(&quot;Social justice&quot;)">Công bằng xã hội</span>: bắt đầu từ những kẻ bé mọn nhất (n. 78); kiểm điểm bằng cách đối xử với người di cư (n. 81).</li></ol>
+    <ol class="arg-list"><li><span class='kw-inline' onclick='jumpToKw("Common good")'>Công ích</span>: tổng thể những điều kiện xã hội cho phép mỗi người đạt viên mãn (GS 26, n. 60).</li><li><span class='kw-inline' onclick='jumpToKw("Universal destination")'>Đích đến phổ quát của của cải</span>: nay bao gồm cả thuật toán, dữ liệu, nền tảng kỹ thuật số (n. 67).</li><li><span class='kw-inline' onclick='jumpToKw("Subsidiarity")'>Bổ trợ</span>: trong thế giới số, 'cấp cao nhất' không phải Nhà nước mà là các đại gia công nghệ (n. 71).</li><li><span class='kw-inline' onclick='jumpToKw("Solidarity")'>Liên đới</span>: vừa là nguyên tắc khách quan, vừa là một nhân đức kiên trì (n. 75).</li><li><span class='kw-inline' onclick='jumpToKw("Social justice")'>Công bằng xã hội</span>: bắt đầu từ những kẻ bé mọn nhất (n. 78); kiểm điểm bằng cách đối xử với người di cư (n. 81).</li></ol>
     <blockquote class="citation">These principles do not constitute a curb on innovation; instead they make it civilized and humane.</blockquote>
     <div class="source-row"><span class="src-label">Nguồn:</span><span class="src-badge">MH n. 46-89, n. 164</span><span class="src-badge">GS 26</span><span class="src-badge">Compendium HTXH</span></div>
     <div class="fn-refs-row"><span class="fn-refs-label">Chú thích liên quan:</span><span class="fn-chip" onclick="jumpToFn(76)">[76]</span> <span class="fn-chip" onclick="jumpToFn(80)">[80]</span> <span class="fn-chip" onclick="jumpToFn(81)">[81]</span> <span class="fn-chip" onclick="jumpToFn(82)">[82]</span> <span class="fn-chip" onclick="jumpToFn(83)">[83]</span> <span class="fn-chip" onclick="jumpToFn(84)">[84]</span> <span class="fn-chip" onclick="jumpToFn(85)">[85]</span> <span class="fn-chip" onclick="jumpToFn(86)">[86]</span> <span class="fn-more">+11 more</span></div>
@@ -1037,7 +1040,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <span class="toggle-arrow">▸</span>
   </div>
   <div class="card-body">
-    <ol class="arg-list"><li><span class="kw-inline" onclick="jumpToKw(&quot;Technocratic paradigm&quot;)">Mô thức kỹ trị</span>: khuynh hướng để logic của hiệu năng, kiểm soát và lợi nhuận một mình định hình mọi quyết định (n. 92).</li><li>Công nghệ không phải chỉ là dụng cụ — khi trở thành tiêu chuẩn duy nhất, nó bắt đầu định nghĩa cái gì đáng kể và cái gì có thể bỏ đi (n. 92).</li><li>Quyền lực số tập trung trong tay vài tác nhân tư nhân, thoát khỏi giám sát công, tạo ra phụ thuộc, loại trừ, thao túng mới (n. 95).</li><li>Romano Guardini (1951): 'Con người hiện đại đã không được huấn luyện để dùng quyền lực một cách tốt' (n. 93).</li></ol>
+    <ol class="arg-list"><li><span class='kw-inline' onclick='jumpToKw("Technocratic paradigm")'>Mô thức kỹ trị</span>: khuynh hướng để logic của hiệu năng, kiểm soát và lợi nhuận một mình định hình mọi quyết định (n. 92).</li><li>Công nghệ không phải chỉ là dụng cụ — khi trở thành tiêu chuẩn duy nhất, nó bắt đầu định nghĩa cái gì đáng kể và cái gì có thể bỏ đi (n. 92).</li><li>Quyền lực số tập trung trong tay vài tác nhân tư nhân, thoát khỏi giám sát công, tạo ra phụ thuộc, loại trừ, thao túng mới (n. 95).</li><li>Romano Guardini (1951): 'Con người hiện đại đã không được huấn luyện để dùng quyền lực một cách tốt' (n. 93).</li></ol>
     <blockquote class="citation">More power does not necessarily imply something better.</blockquote>
     <div class="source-row"><span class="src-label">Nguồn:</span><span class="src-badge">MH n. 92-96, 119</span><span class="src-badge">Laudato Si' n. 106-109</span><span class="src-badge">R. Guardini, Das Ende der Neuzeit (1951)</span></div>
     <div class="fn-refs-row"><span class="fn-refs-label">Chú thích liên quan:</span><span class="fn-chip" onclick="jumpToFn(119)">[119]</span> <span class="fn-chip" onclick="jumpToFn(120)">[120]</span> <span class="fn-chip" onclick="jumpToFn(121)">[121]</span></div>
@@ -1143,15 +1146,15 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
   <div class="card-header" onclick="toggleCard(this)">
     <span class="card-num">11</span>
     <div class="card-header-text">
-      <span class="card-title">Tham chiếu của tu sĩ Việt Nam: Cha Hồng Y Nguyễn Văn Thuận</span>
+      <span class="card-title">Tham chiếu của tu sĩ Việt Nam: Đức Hồng Y Nguyễn Văn Thuận</span>
       <span class="card-desc">Một trong những tham chiếu chính của Đức Lêô XIV (n. 125)</span>
     </div>
     <span class="toggle-arrow">▸</span>
   </div>
   <div class="card-body">
-    <ol class="arg-list"><li>Trong đoạn nói về 'các tử đạo của tình huynh đệ và công bằng', Đức Lêô XIV trích Cha Hồng Y Văn Thuận như chứng từ về 'hy vọng của Tin Mừng và phẩm giá nhân loại giữa các điều kiện khắc nghiệt, thường vô nhân đạo' (n. 125).</li><li>Cùng được nêu tên: Thánh Maximilianô Maria Kolbe, Thánh Oscar Romero, Chân phước Enrique Angelelli — và Đáng kính Phanxicô Xaviê Nguyễn Văn Thuận.</li><li>Đặc tính chung: những vị đã 'embodied the hope of the Gospel' giữa hoàn cảnh khắc nghiệt — phù hợp hoàn toàn với 13 năm tù của Cha Hồng Y (1975-1988).</li><li>Việc Đức Lêô XIV nhắc tên Cha trong một thông điệp chính thức là một bước thăng tiến quan trọng cho hồ sơ phong chân phước.</li></ol>
+    <ol class="arg-list"><li>Trong đoạn nói về 'các tử đạo của tình huynh đệ và công bằng', Đức Lêô XIV trích Đức Hồng Y Văn Thuận như chứng từ về 'hy vọng của Tin Mừng và phẩm giá nhân loại giữa các điều kiện khắc nghiệt, thường vô nhân đạo' (n. 125).</li><li>Cùng được nêu tên: Thánh Maximilianô Maria Kolbe, Thánh Oscar Romero, Chân phước Enrique Angelelli — và Đáng kính Phanxicô Xaviê Nguyễn Văn Thuận.</li><li>Đặc tính chung: những vị đã 'embodied the hope of the Gospel' giữa hoàn cảnh khắc nghiệt — phù hợp hoàn toàn với 13 năm tù của Đức Hồng Y (1975-1988).</li><li>Việc Đức Lêô XIV nhắc tên Cha trong một thông điệp chính thức là một bước thăng tiến quan trọng cho hồ sơ phong chân phước.</li></ol>
     <blockquote class="citation">Such as parents, nurses, doctors, volunteers and those who remain alongside an elderly person or an outcast.</blockquote>
-    <div class="source-row"><span class="src-label">Nguồn:</span><span class="src-badge">MH n. 125 — đoạn đề cập Cha Hồng Y Văn Thuận</span></div>
+    <div class="source-row"><span class="src-label">Nguồn:</span><span class="src-badge">MH n. 125 — đoạn đề cập Đức Hồng Y Văn Thuận</span></div>
     
   </div>
 </div>
@@ -1171,7 +1174,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <div class="fn-refs-row"><span class="fn-refs-label">Chú thích liên quan:</span><span class="fn-chip" onclick="jumpToFn(113)">[113]</span> <span class="fn-chip" onclick="jumpToFn(114)">[114]</span> <span class="fn-chip" onclick="jumpToFn(115)">[115]</span> <span class="fn-chip" onclick="jumpToFn(116)">[116]</span></div>
   </div>
 </div>
-<div class="card open" id="cd13" data-tab="chu_diem">
+<div class="card" id="cd13" data-tab="chu_diem">
   <div class="card-header" onclick="toggleCard(this)">
     <span class="card-num">13</span>
     <div class="card-header-text">
@@ -1186,7 +1189,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
 
     <div class="definition" style="margin-top:14px;font-weight:700;color:var(--navy);font-style:italic">Tầng I — Đức Maria: đỉnh điểm chương trình thiêng liêng</div>
     <ol class="arg-list">
-      <li><strong>Đức Trinh Nữ Maria</strong> (<em>The Blessed Virgin Mary</em>) — xuất hiện ở §229 (giới thiệu chương trình đời sống qua 4 việc), §230 (mở Kết luận với <span class="kw-inline" onclick="jumpToKw('Magnificat')">Magnificat</span>), và đặc biệt §243-245. <em>Bối cảnh</em>: Đức Lêô XIV chọn Đức Maria làm "trụ cột thứ tư" của Kitô giáo cho thời AI: cầu nguyện. <em>Lý do</em>: Bài ca Magnificat (Lc 1,46-55) là "<em>bài thánh ca mạnh mẽ và đổi mới nhất từng được nêu ra</em>" — mạc khải một logic đảo ngược nơi Thiên Chúa "<em>làm tan tác kẻ kiêu căng, hạ bệ kẻ quyền thế, nâng dậy người hèn mọn</em>" (§243).</li>
+      <li><strong>Đức Trinh Nữ Maria</strong> (<em>The Blessed Virgin Mary</em>) — xuất hiện ở §229 (giới thiệu chương trình bốn trụ), §230 (mở Kết luận với <span class="kw-inline" onclick="jumpToKw('Magnificat')">Magnificat</span>), và đặc biệt §243-245. <em>Bối cảnh</em>: Đức Lêô XIV chọn Đức Maria làm "trụ cột thứ tư" của Kitô giáo cho thời AI: cầu nguyện. <em>Lý do</em>: Bài ca Magnificat (Lc 1,46-55) là "<em>bài thánh ca mạnh mẽ và đổi mới nhất từng được nêu ra</em>" — mạc khải một logic đảo ngược nơi Thiên Chúa "<em>làm tan tác kẻ kiêu căng, hạ bệ kẻ quyền thế, nâng dậy người hèn mọn</em>" (§243).</li>
       <li><strong>Đức Maria — Mẹ Thiên Chúa</strong> (<em>Mary the Most Holy Mother of God</em>) — chú thích [205]: tham chiếu bài giảng của chính Đức Lêô XIV trong Lễ trọng Đức Maria Mẹ Thiên Chúa (31.12.2025). Đặt Đức Maria ở vị thế <em>compass</em> (la bàn) cho kỷ nguyên kỹ thuật số.</li>
       <li><strong>Đức Bà Bonaria</strong> (<em>Our Lady of Bonaria</em>) — chú thích [224]: tham chiếu bài giảng cuối của thánh Phaolô VI tại Đền thờ Đức Mẹ Bonaria (24.4.1970), gọi Đức Maria là "<em>thi sĩ và nữ tiên tri của Ơn Cứu Chuộc</em>" (§244).</li>
     </ol>
@@ -1545,7 +1548,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <ul class="arg-list"><li>'Giải vũ trang ngôn từ': 'Hãy giải vũ trang ngôn từ và chúng ta sẽ giúp giải vũ trang thế giới' (n. 214 — chính lời Đức Lêô XIV).</li><li>Áp dụng vào AI: 'không chỉ điều tiết mà giải vũ trang, làm cho thân thiện và tiếp cận được' (n. 110).</li><li>Lời tiên báo ngay từ ngày khai mạc Triều Giáo Hoàng (8.5.2025): 'một hoà bình không vũ trang và giải vũ trang' (n. 228).</li></ul>
   </div>
 </div>
-<div class="card open" id="tk20" data-tab="tu_khoa" data-kw="Magnificat">
+<div class="card" id="tk20" data-tab="tu_khoa" data-kw="Magnificat">
   <div class="card-header" onclick="toggleCard(this)">
     <span class="icon-box icon-term">λ</span>
     <div class="card-header-text">
@@ -1981,13 +1984,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
   <div class="card-header" onclick="toggleCard(this)">
     <span class="icon-box icon-q">Q</span>
     <div class="card-header-text">
-      <span class="card-title q-style">Cha Hồng Y Văn Thuận trong thông điệp — ý nghĩa nào cho Hội Thánh Việt Nam?</span>
+      <span class="card-title q-style">Đức Hồng Y Văn Thuận trong thông điệp — ý nghĩa nào cho Hội Thánh Việt Nam?</span>
       <span class="cap-badge cap-hieu_van_ban">Hiểu VB</span>
     </div>
     <span class="toggle-arrow">▸</span>
   </div>
   <div class="card-body">
-    <ul class="arg-list"><li>Đoạn 125: Đức Lêô XIV nêu tên 'Venerable Francis-Xavier Nguyễn Văn Thuận' cùng với Maximilianô Kolbe, Oscar Romero, Enrique Angelelli như 'tử đạo của tình huynh đệ và công bằng'.</li><li>Đặc tính chung: 'embodied the hope of the Gospel as well as human dignity amidst harsh, often inhumane conditions'.</li><li>Việc Cha Hồng Y được nhắc tên trong một thông điệp chính thức là bước tiến quan trọng cho hồ sơ phong chân phước.</li><li>Ý nghĩa cho Hội Thánh Việt Nam: Một nhân chứng người Việt được tuyên dương trong văn kiện huấn quyền tối cao — củng cố tính phổ quát và tính Catholic 'mỗi địa phương đóng góp món quà riêng' (LG 13, n. 26 MH).</li></ul>
+    <ul class="arg-list"><li>Đoạn 125: Đức Lêô XIV nêu tên 'Venerable Francis-Xavier Nguyễn Văn Thuận' cùng với Maximilianô Kolbe, Oscar Romero, Enrique Angelelli như 'tử đạo của tình huynh đệ và công bằng'.</li><li>Đặc tính chung: 'embodied the hope of the Gospel as well as human dignity amidst harsh, often inhumane conditions'.</li><li>Việc Đức Hồng Y được nhắc tên trong một thông điệp chính thức là bước tiến quan trọng cho hồ sơ phong chân phước.</li><li>Ý nghĩa cho Hội Thánh Việt Nam: Một nhân chứng người Việt được tuyên dương trong văn kiện huấn quyền tối cao — củng cố tính phổ quát và tính Catholic 'mỗi địa phương đóng góp món quà riêng' (LG 13, n. 26 MH).</li></ul>
   </div>
 </div>
 <div class="card" id="ch11" data-tab="cau_hoi" data-cap="tong_hop">
@@ -2063,7 +2066,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="sec-toolbar">
         <div class="tb-left"><span style="font-size:.84rem;color:var(--ink2)">🗂 Bản đồ tư tưởng theo cụm chủ đề — click vào thẻ để xem chi tiết</span></div>
       </div>
-      <div id="theo-chu-de-content"><div class="cat-section" id="nhom1"><div class="cat-head"><div class="cat-head-dot" style="background:#c9952b"></div><h2 class="cat-head-title">I. NỀN TẢNG: BABEL HAY GIÊRUSALEM</h2><span class="cat-head-n">2 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#c9952b" data-cat="nhom1" data-idx="0"><div class="tc-kw">Hai hình ảnh Kinh Thánh</div><div class="tc-tags"><span class="tc-tag de">Tower of Babel</span><span class="tc-tag de">Nehemiah</span><span class="tc-tag">Tháp Babel</span><span class="tc-tag">Nehemia</span></div><div class="tc-preview">Hai dự án xây dựng — đối lập làm trục biện chứng cho toàn thông điệp.</div></div><div class="topic-card" style="--cc:#c9952b" data-cat="nhom1" data-idx="1"><div class="tc-kw">Hai thành đô của Augustinô</div><div class="tc-tags"><span class="tc-tag de">Two cities</span><span class="tc-tag de">Duae civitates</span><span class="tc-tag">Hai thành đô</span><span class="tc-tag">Hai tình yêu</span></div><div class="tc-preview">Augustinô (De civ. Dei XIV, 28): hai tình yêu xây hai thành đô.</div></div></div></div><div class="cat-section" id="nhom2"><div class="cat-head"><div class="cat-head-dot" style="background:#2b8a7a"></div><h2 class="cat-head-title">II. PHẨM GIÁ NHÂN VỊ &amp; NĂM NGUYÊN TẮC HTXH</h2><span class="cat-head-n">2 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#2b8a7a" data-cat="nhom2" data-idx="0"><div class="tc-kw">Dignitas Infinita — Phẩm giá vô hạn</div><div class="tc-tags"><span class="tc-tag de">Dignitas infinita</span><span class="tc-tag de">Imago Trinitatis</span><span class="tc-tag">Phẩm giá vô hạn</span><span class="tc-tag">Hình ảnh Ba Ngôi</span></div><div class="tc-preview">Bốn cấp phẩm giá, cấp hữu thể là vô hạn và không thể di chuyển.</div></div><div class="topic-card" style="--cc:#2b8a7a" data-cat="nhom2" data-idx="1"><div class="tc-kw">Năm nguyên tắc trong thời số</div><div class="tc-tags"><span class="tc-tag de">Common good</span><span class="tc-tag de">Subsidiarity</span><span class="tc-tag">Công ích</span><span class="tc-tag">Bổ trợ</span></div><div class="tc-preview">Mỗi nguyên tắc được áp dụng vào AI: thuật toán, dữ liệu, nền tảng.</div></div></div></div><div class="cat-section" id="nhom3"><div class="cat-head"><div class="cat-head-dot" style="background:#1a5276"></div><h2 class="cat-head-title">III. AI &amp; MÔ THỨC KỸ TRỊ</h2><span class="cat-head-n">3 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#1a5276" data-cat="nhom3" data-idx="0"><div class="tc-kw">AI: cultivated, not built</div><div class="tc-tags"><span class="tc-tag de">AI</span><span class="tc-tag de">Artificial Intelligence</span><span class="tc-tag">TTNT</span><span class="tc-tag">Trí tuệ nhân tạo</span></div><div class="tc-preview">Bản chất AI: mô phỏng chứ không có kinh nghiệm; cultivated, not built.</div></div><div class="topic-card" style="--cc:#1a5276" data-cat="nhom3" data-idx="1"><div class="tc-kw">Mô thức kỹ trị — Technocratic Paradigm</div><div class="tc-tags"><span class="tc-tag de">Technocratic paradigm</span><span class="tc-tag de">Laudato Si'</span><span class="tc-tag">Mô thức kỹ trị</span></div><div class="tc-preview">Logic hiệu năng-kiểm soát-lợi nhuận một mình định hình mọi quyết định.</div></div><div class="topic-card" style="--cc:#1a5276" data-cat="nhom3" data-idx="2"><div class="tc-kw">Transhumanism &amp; Posthumanism</div><div class="tc-tags"><span class="tc-tag de">Transhumanism</span><span class="tc-tag de">Posthumanism</span><span class="tc-tag">Chủ nghĩa siêu nhân</span><span class="tc-tag">Chủ nghĩa hậu nhân bản</span></div><div class="tc-preview">Hai trào lưu cố gắng vượt giới hạn nhân loại bằng công nghệ.</div></div></div></div><div class="cat-section" id="nhom4"><div class="cat-head"><div class="cat-head-dot" style="background:#6b4fa0"></div><h2 class="cat-head-title">IV. LAO ĐỘNG, GIA ĐÌNH, NÔ LỆ MỚI</h2><span class="cat-head-n">3 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#6b4fa0" data-cat="nhom4" data-idx="0"><div class="tc-kw">Lao động trong thời tự động hoá</div><div class="tc-tags"><span class="tc-tag de">Work</span><span class="tc-tag de">Automation</span><span class="tc-tag">Lao động</span><span class="tc-tag">Tự động hoá</span></div><div class="tc-preview">AI buộc người làm thích nghi máy hơn là máy phục vụ người.</div></div><div class="topic-card" style="--cc:#6b4fa0" data-cat="nhom4" data-idx="1"><div class="tc-kw">Nô lệ mới đằng sau AI</div><div class="tc-tags"><span class="tc-tag de">new slavery</span><span class="tc-tag de">data labeling</span><span class="tc-tag">Nô lệ mới</span><span class="tc-tag">Lao động vô hình</span></div><div class="tc-preview">Phía sau AI là chuỗi dài exploitation — Hội Thánh xin lỗi vì sự chậm trễ lịch sử.</div></div><div class="topic-card" style="--cc:#6b4fa0" data-cat="nhom4" data-idx="2"><div class="tc-kw">Gia đình và người trẻ</div><div class="tc-tags"><span class="tc-tag de">family</span><span class="tc-tag de">young people</span><span class="tc-tag">Gia đình</span><span class="tc-tag">Người trẻ</span></div><div class="tc-preview">Gia đình là tế bào căn bản; bảo vệ trẻ em khỏi exposure quá sớm.</div></div></div></div><div class="cat-section" id="nhom5"><div class="cat-head"><div class="cat-head-dot" style="background:#8a3a2b"></div><h2 class="cat-head-title">V. CHIẾN TRANH, VÀ VĂN MINH TÌNH YÊU</h2><span class="cat-head-n">3 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#8a3a2b" data-cat="nhom5" data-idx="0"><div class="tc-kw">Just War theory — outdated</div><div class="tc-tags"><span class="tc-tag de">just war</span><span class="tc-tag de">bellum iustum</span><span class="tc-tag">Chiến tranh chính nghĩa</span></div><div class="tc-preview">Lý thuyết just war 'thường được dùng để biện hộ mọi loại chiến tranh' — nay lỗi thời.</div></div><div class="topic-card" style="--cc:#8a3a2b" data-cat="nhom5" data-idx="1"><div class="tc-kw">Vũ khí tự động &amp; AI quân sự</div><div class="tc-tags"><span class="tc-tag de">autonomous weapons</span><span class="tc-tag de">LAWS</span><span class="tc-tag">Vũ khí tự động</span></div><div class="tc-preview">Không thuật toán nào có thể làm chiến tranh trở nên có thể chấp nhận.</div></div><div class="topic-card" style="--cc:#8a3a2b" data-cat="nhom5" data-idx="2"><div class="tc-kw">Năm con đường của Văn Minh Tình Yêu</div><div class="tc-tags"><span class="tc-tag de">civilization of love</span><span class="tc-tag de">Paul VI</span><span class="tc-tag">Văn minh tình thương</span><span class="tc-tag">Năm con đường</span></div><div class="tc-preview">Đáp ứng tích cực của Đức Lêô XIV: 5 cách mọi người có thể làm phần mình.</div></div></div></div><div class="cat-section" id="nhom6"><div class="cat-head"><div class="cat-head-dot" style="background:#7b3f00"></div><h2 class="cat-head-title">VI. KẾT LUẬN: MAGNIFICAT CHO THỜI ĐẠI AI</h2><span class="cat-head-n">2 chủ đề</span></div><div class="topic-grid"><div class="topic-card" style="--cc:#7b3f00" data-cat="nhom6" data-idx="0"><div class="tc-kw">Bốn cột trụ của đời sống Kitô hữu</div><div class="tc-tags"><span class="tc-tag de">four pillars</span><span class="tc-tag de">Incarnation</span><span class="tc-tag">Bốn cột trụ</span></div><div class="tc-preview">Chương trình đời sống Kitô hữu để định hướng thời đại AI.</div></div><div class="topic-card" style="--cc:#7b3f00" data-cat="nhom6" data-idx="1"><div class="tc-kw">Chứng nhân: Cha Hồng Y Văn Thuận</div><div class="tc-tags"><span class="tc-tag de">Francis-Xavier Nguyễn Văn Thuận</span><span class="tc-tag de">martyrs</span><span class="tc-tag">Cha Hồng Y Phanxicô Xaviê Nguyễn Văn Thuận</span><span class="tc-tag">Chứng nhân Việt Nam</span></div><div class="tc-preview">Một trong những chứng nhân được Đức Lêô XIV nêu tên trong văn kiện.</div></div></div></div></div>
+      <div id="theo-chu-de-content"></div>
     </section>
 
     <!-- HỌP BÁO -->
@@ -4115,7 +4118,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-80">
         <div class="tv-num-col"><div class="tv-num">80</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Trong thời đại này, công bằng xã hội cũng phải vật lộn với môi trường do các công nghệ kỹ thuật số định hình. Sự lan toả của các mạng lưới toàn cầu, các nền tảng và các hệ thống trí tuệ nhân tạo đang thay đổi cách chúng ta thu nhận thông tin, truyền thông và tiếp cận các dịch vụ. Công lý đòi hỏi chúng ta ngăn chặn sự xuất hiện của những hình thức loại trừ và tước đoạt tự do mới: các cá nhân và dân tộc bị cản trở hay từ chối tiếp cận các công nghệ căn bản, các cộng đồng bị phơi cho sự giám sát xâm phạm và các nhóm xã hội bị phạt bởi các thuật toán mờ ám duy trì định kiến và phân biệt đối xử. Trong kỷ nguyên kỹ thuật số, một trật tự xã hội công chính bảo đảm cho mọi người tiếp cận cơ hội bình đẳng, bảo vệ các thành viên trẻ và yếu nhất của xã hội, chống lại sự thù hằn và thông tin sai lệch, và đặt việc sử dụng dữ liệu và công nghệ dưới sự giám sát công — để nguyên tắc dẫn đường không chỉ là lợi nhuận mà là phẩm giá của mỗi người và công ích của tất cả mọi người.</div>
+          <div class="tv-text">Trong thời đại này, công bằng xã hội cũng phải vật lộn với môi trường do các công nghệ kỹ thuật số định hình. Qua sự lan toả của các mạng lưới toàn cầu, các nền tảng và các hệ thống trí tuệ nhân tạo, cách thức thu nhận thông tin, truyền thông và tiếp cận các dịch vụ đang dần thay đổi. Công lý đòi hỏi chúng ta ngăn chặn sự xuất hiện của những hình thức loại trừ và tước đoạt tự do mới: các cá nhân và dân tộc bị cản trở hay từ chối tiếp cận các công nghệ căn bản, các cộng đồng bị phơi cho sự giám sát xâm phạm và các nhóm xã hội bị phạt bởi các thuật toán mờ ám duy trì định kiến và phân biệt đối xử. Trong kỷ nguyên kỹ thuật số, một trật tự xã hội công chính bảo đảm cho mọi người tiếp cận cơ hội bình đẳng, bảo vệ các thành viên trẻ và yếu nhất của xã hội, chống lại sự thù hằn và thông tin sai lệch, và đặt việc sử dụng dữ liệu và công nghệ dưới sự giám sát công — để nguyên tắc dẫn đường không chỉ là lợi nhuận mà là phẩm giá của mỗi người và công ích của tất cả mọi người.</div>
         </div>
       </div>
 
@@ -4379,7 +4382,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-108">
         <div class="tv-num-col"><div class="tv-num">108</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Thực tế, như với mọi sự thay đổi công nghệ lớn, AI có xu hướng khuếch đại quyền lực của những người đã có sẵn các nguồn lực kinh tế, chuyên môn và quyền tiếp cận dữ liệu. Dưới ánh sáng công ích và đích đến phổ quát của của cải, điều này nêu lên những mối quan ngại nghiêm trọng — vì các nhóm nhỏ nhưng có ảnh hưởng cao có thể định hình các kiểu thông tin và tiêu thụ, ảnh hưởng đến các tiến trình dân chủ và lái các động lực kinh tế về lợi thế của mình — làm xói mòn công bằng xã hội và liên đới giữa các dân tộc. Vì lý do này, thiết yếu là việc sử dụng AI — đặc biệt khi nó chạm đến các của cải công và các quyền căn bản — phải được hướng dẫn bởi các tiêu chí rõ ràng và sự giám sát hữu hiệu, đặt nền trên sự tham gia và bổ trợ. Các cộng đồng và tổ chức trung gian không nên bị giản lược thành những người nhận thụ động các quyết định được làm nơi khác; họ phải có thể đóng góp vào phân định và giám sát. Hơn nữa, <em>quyền sở hữu dữ liệu</em> không thể chỉ được phó cho tay tư nhân mà phải được quy định thích hợp. Dữ liệu là sản phẩm của nhiều người đóng góp và không nên được đối xử như điều có thể bán đi hay phó cho một số ít chọn lọc. Cần suy nghĩ sáng tạo để quản lý dữ liệu như <em>một của cải chung hay được chia sẻ</em> — trong tinh thần tham gia, như thánh Gioan Phaolô II đã gợi ý liên quan đến các của cải tập thể.<a class="fn-chip-inline" onclick="jumpToFn(128)">[128]</a></div>
+          <div class="tv-text">Thực tế, như với mọi sự thay đổi công nghệ lớn, việc triển khai AI có xu hướng khuếch đại quyền lực của những người đã có sẵn các nguồn lực kinh tế, chuyên môn và quyền tiếp cận dữ liệu. Dưới ánh sáng công ích và đích đến phổ quát của của cải, điều này nêu lên những mối quan ngại nghiêm trọng — vì các nhóm nhỏ nhưng có ảnh hưởng cao có thể định hình các kiểu thông tin và tiêu thụ, ảnh hưởng đến các tiến trình dân chủ và lái các động lực kinh tế về lợi thế của mình — làm xói mòn công bằng xã hội và liên đới giữa các dân tộc. Vì lý do này, thiết yếu là việc sử dụng AI — đặc biệt khi nó chạm đến các của cải công và các quyền căn bản — phải được hướng dẫn bởi các tiêu chí rõ ràng và sự giám sát hữu hiệu, đặt nền trên sự tham gia và bổ trợ. Các cộng đồng và tổ chức trung gian không nên bị giản lược thành những người nhận thụ động các quyết định được làm nơi khác; họ phải có thể đóng góp vào phân định và giám sát. Hơn nữa, <em>quyền sở hữu dữ liệu</em> không thể chỉ được phó cho tay tư nhân mà phải được quy định thích hợp. Dữ liệu là sản phẩm của nhiều người đóng góp và không nên được đối xử như điều có thể bán đi hay phó cho một số ít chọn lọc. Cần suy nghĩ sáng tạo để quản lý dữ liệu như <em>một của cải chung hay được chia sẻ</em> — trong tinh thần tham gia, như thánh Gioan Phaolô II đã gợi ý liên quan đến các của cải tập thể.<a class="fn-chip-inline" onclick="jumpToFn(128)">[128]</a></div>
         </div>
       </div>
 
@@ -4611,7 +4614,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-132">
         <div class="tv-num-col"><div class="tv-num">132</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Việc sử dụng các nền tảng kỹ thuật số và các hệ thống AI đang tạo nên những thay đổi sâu xa trong truyền thông công cộng và chính trị. Các công cụ vốn có thể cổ võ đối thoại và sự tham gia thường được dùng để xây dựng những tự sự méo mó và làm mờ ranh giới giữa sự thật và sự gian dối — pha trộn sự kiện với ý kiến. Sự lan truyền thông tin sai lệch không bắt đầu với AI, nhưng hôm nay nó tìm thấy một bộ khuếch đại đầy uy lực trong AI. Khả năng thao túng nội dung, hình ảnh và video phơi con người ra cho các viễn ảnh thiên vị hay đánh lừa. Vấn đề này có cả chiều kích văn hoá và đạo đức — vì phẩm chất truyền thông công cộng tuỳ thuộc trực tiếp vào lòng tin xã hội và ngược lại định hình nó. Đồng thời, thông tin chân thực không nảy sinh từ sự kiểm soát tập trung hay tự động. Trong diễn ngôn công cộng, sự thật của các sự kiện có một chiều kích lý tính — vì nó đòi kiểm chứng, đối chiếu các nguồn và lập luận có trách nhiệm. Hơn nữa, nó sâu sắc mang tính tương quan — được xây qua các mối dây tin cậy và các thực hành chung, cũng như qua sự trao đổi trung thực với người khác và với thế giới. Chỉ <em>sự tìm kiếm chung tính xác thực của các sự kiện</em> — được nhận thức như một công ích — mới có thể cung cấp một nền tảng vững chắc cho truyền thông công chính.</div>
+          <div class="tv-text">Qua việc sử dụng các nền tảng kỹ thuật số và các hệ thống AI, những thay đổi sâu xa trong truyền thông công cộng và chính trị đang được tạo nên. Các công cụ vốn có thể cổ võ đối thoại và sự tham gia thường được dùng để xây dựng những tự sự méo mó và làm mờ ranh giới giữa sự thật và sự gian dối — pha trộn sự kiện với ý kiến. Sự lan truyền thông tin sai lệch không bắt đầu với AI, nhưng hôm nay nó tìm thấy một bộ khuếch đại đầy uy lực trong AI. Khả năng thao túng nội dung, hình ảnh và video phơi con người ra cho các viễn ảnh thiên vị hay đánh lừa. Vấn đề này có cả chiều kích văn hoá và đạo đức — vì phẩm chất truyền thông công cộng tuỳ thuộc trực tiếp vào lòng tin xã hội và ngược lại định hình nó. Đồng thời, thông tin chân thực không nảy sinh từ sự kiểm soát tập trung hay tự động. Trong diễn ngôn công cộng, sự thật của các sự kiện có một chiều kích lý tính — vì nó đòi kiểm chứng, đối chiếu các nguồn và lập luận có trách nhiệm. Hơn nữa, nó sâu sắc mang tính tương quan — được xây qua các mối dây tin cậy và các thực hành chung, cũng như qua sự trao đổi trung thực với người khác và với thế giới. Chỉ <em>sự tìm kiếm chung tính xác thực của các sự kiện</em> — được nhận thức như một công ích — mới có thể cung cấp một nền tảng vững chắc cho truyền thông công chính.</div>
         </div>
       </div>
 
@@ -4698,7 +4701,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-141">
         <div class="tv-num-col"><div class="tv-num">141</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Trong những năm gần đây, văn liệu tâm lý học và tâm thần học đã ghi nhận với sự nhấn mạnh ngày càng tăng cách thức sự tiếp xúc sớm và không được giám sát với các thiết bị kỹ thuật số và truyền thông xã hội có thể tác động tiêu cực đến giấc ngủ, khả năng tập trung, sự kiểm soát cảm xúc và các quan hệ — đặc biệt trong những giai đoạn dễ tổn thương nhất của đời sống — đôi khi với hậu quả bi đát. Điều này càng trầm trọng hơn bởi sự dễ dàng tiếp cận với nội dung bạo lực hay làm nhục — xúc phạm cảm xúc — với tài liệu khiêu dâm và quá-tình-dục, với các thông điệp tầm thường hoá thân thể và cảm xúc, và với các đề xuất bình thường hoá hành vi rủi ro. Các hiện tượng trực tuyến như <em>grooming</em> (chiêu dụ), tống tiền và khai thác tình dục trẻ vị thành niên không phải là hiếm — và được làm nguy hiểm hơn bởi việc sử dụng các hồ sơ giả, các thuật toán tạo điều kiện cho các tiếp xúc nguy hiểm, và các công cụ AI có khả năng thao túng hình ảnh và video. Việc có một thiết bị di động cá nhân ở tuổi quá sớm và sử dụng nó mà không có sự giám sát của người lớn có thể làm trầm trọng các yếu đuối của người trẻ, nuôi dưỡng sự nghiện và phơi họ ra cho sự cô lập, bắt nạt và <em>cyberbullying</em>, cũng như áp lực chia sẻ hình ảnh thân mật hay thông tin nhạy cảm.</div>
+          <div class="tv-text">Trong những năm gần đây, văn liệu tâm lý học và tâm thần học đã ghi nhận với sự nhấn mạnh ngày càng tăng cách thức sự tiếp xúc sớm và không được giám sát với các thiết bị kỹ thuật số và truyền thông xã hội có thể tác động tiêu cực đến giấc ngủ, khả năng tập trung, sự kiểm soát cảm xúc và các quan hệ — đặc biệt trong những giai đoạn dễ tổn thương nhất của đời sống — đôi khi với hậu quả bi đát. Điều này càng trầm trọng hơn bởi sự dễ dàng tiếp cận với nội dung bạo lực hay làm nhục — xúc phạm cảm xúc — với tài liệu khiêu dâm và quá-tình-dục, với các thông điệp tầm thường hoá thân thể và cảm xúc, và với các đề xuất bình thường hoá hành vi rủi ro. Các hiện tượng trực tuyến như <em>grooming</em> (chiêu dụ), tống tiền và khai thác tình dục trẻ vị thành niên không phải là hiếm — và được làm nguy hiểm hơn bởi việc sử dụng các hồ sơ giả, các thuật toán tạo điều kiện cho các tiếp xúc nguy hiểm, và các công cụ AI vốn cho phép thao túng hình ảnh và video. Việc có một thiết bị di động cá nhân ở tuổi quá sớm và sử dụng nó mà không có sự giám sát của người lớn có thể làm trầm trọng các yếu đuối của người trẻ, nuôi dưỡng sự nghiện và phơi họ ra cho sự cô lập, bắt nạt và <em>cyberbullying</em>, cũng như áp lực chia sẻ hình ảnh thân mật hay thông tin nhạy cảm.</div>
         </div>
       </div>
 
@@ -4735,7 +4738,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-145">
         <div class="tv-num-col"><div class="tv-num">145</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Thách đố lớn thứ hai là <em>sư phạm</em>. Nhiều hệ thống giáo dục vật lộn để giữ nhịp với sự thay đổi và để nâng đỡ sự phát triển toàn diện của học sinh. Sự tiến bộ của các công nghệ thông tin và AI đang nhanh chóng làm lỗi thời các chương trình giảng dạy vốn được thiết kế cho một thời đại khác. Trong khi đó, sự tổ chức của các trường, các không gian vật lý, các phương pháp đánh giá và vai trò của chính các giáo viên phải được suy tư lại để cổ võ một giáo dục đích thực toàn diện — đề cập đến mọi chiều kích của con người. Cần nâng đỡ <em>sự đào tạo liên tục của các giáo viên</em> suốt đời nghề nghiệp của họ — để họ có thể dấn thân tích cực với các công nghệ mới — giúp học sinh sử dụng chúng cách có trách nhiệm, phê phán và sáng tạo — thay vì thụ động chịu ảnh hưởng của chúng.</div>
+          <div class="tv-text">Thách đố lớn thứ hai là <em>sư phạm</em>. Nhiều hệ thống giáo dục vật lộn để giữ nhịp với sự thay đổi và để nâng đỡ sự phát triển toàn diện của học sinh. Trước sự tiến bộ của các công nghệ thông tin và AI, các chương trình giảng dạy vốn được thiết kế cho một thời đại khác đang nhanh chóng trở nên lỗi thời. Trong khi đó, sự tổ chức của các trường, các không gian vật lý, các phương pháp đánh giá và vai trò của chính các giáo viên phải được suy tư lại để cổ võ một giáo dục đích thực toàn diện — đề cập đến mọi chiều kích của con người. Cần nâng đỡ <em>sự đào tạo liên tục của các giáo viên</em> suốt đời nghề nghiệp của họ — để họ có thể dấn thân tích cực với các công nghệ mới — giúp học sinh sử dụng chúng cách có trách nhiệm, phê phán và sáng tạo — thay vì thụ động chịu ảnh hưởng của chúng.</div>
         </div>
       </div>
 
@@ -4780,7 +4783,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-150">
         <div class="tv-num-col"><div class="tv-num">150</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Hôm nay, sự hội tụ của tự động hoá, robot và AI đang nhanh chóng biến đổi chính cấu trúc của lao động. Người ta nói rằng điều này sẽ đem lại những cải thiện lớn cho mọi người. Trong thực tế, tuy nhiên, các "<em>cách thức mới</em>" làm việc không nhất thiết tốt hơn — vì "<em>trong khi AI hứa tăng năng suất bằng cách đảm nhận các công việc thường nhật, nó thường buộc người lao động thích nghi với tốc độ và đòi hỏi của các máy móc — thay vì các máy móc được thiết kế để nâng đỡ những ai làm việc. Kết quả là — trái với các lợi ích quảng cáo của AI — các đường lối hiện thời với công nghệ có thể nghịch lý làm mất kỹ năng của người lao động, đặt họ dưới sự giám sát tự động và đẩy họ vào các nhiệm vụ cứng nhắc và lặp lại. Nhu cầu theo kịp tốc độ công nghệ có thể xói mòn cảm thức về sự tự chủ của người lao động và bóp nghẹt các năng lực đổi mới mà họ được kỳ vọng đem vào công việc của mình</em>."<a class="fn-chip-inline" onclick="jumpToFn(152)">[152]</a> Chính để tránh sự trôi dạt này, cần thiết kế các hệ thống <em>lấy con người làm trung tâm</em> — không chỉ dựa trên hiệu năng.</div>
+          <div class="tv-text">Hôm nay, qua sự hội tụ của tự động hoá, robot và AI, chính cấu trúc của lao động đang nhanh chóng bị biến đổi. Người ta nói rằng điều này sẽ đem lại những cải thiện lớn cho mọi người. Trong thực tế, tuy nhiên, các "<em>cách thức mới</em>" làm việc không nhất thiết tốt hơn — vì "<em>trong khi AI hứa tăng năng suất bằng cách đảm nhận các công việc thường nhật, nó thường buộc người lao động thích nghi với tốc độ và đòi hỏi của các máy móc — thay vì các máy móc được thiết kế để nâng đỡ những ai làm việc. Kết quả là — trái với các lợi ích quảng cáo của AI — các đường lối hiện thời với công nghệ có thể nghịch lý làm mất kỹ năng của người lao động, đặt họ dưới sự giám sát tự động và đẩy họ vào các nhiệm vụ cứng nhắc và lặp lại. Nhu cầu theo kịp tốc độ công nghệ có thể xói mòn cảm thức về sự tự chủ của người lao động và bóp nghẹt các năng lực đổi mới mà họ được kỳ vọng đem vào công việc của mình</em>."<a class="fn-chip-inline" onclick="jumpToFn(152)">[152]</a> Chính để tránh sự trôi dạt này, cần thiết kế các hệ thống <em>lấy con người làm trung tâm</em> — không chỉ dựa trên hiệu năng.</div>
         </div>
       </div>
 
@@ -5059,7 +5062,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
         <div class="tv-num-col"><div class="tv-num">181</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
           <div class="tv-text">Từ nhãn quan này, Học thuyết Xã hội của Giáo Hội kêu gọi <em>một trách nhiệm chung</em>. Nó yêu cầu các tiến trình này được hướng dẫn với tầm nhìn xa: bởi các <em>định chế</em> có khả năng điều tiết mà không bóp nghẹt, và bảo vệ mà không lấn át; bởi các <em>doanh nghiệp</em> nhìn nhận lao động và phẩm giá như các thước đo thành công; bởi các <em>tổ chức trung gian và các cộng đồng giáo dục</em> tái xây dựng lòng tin và các quan hệ; và bởi các <em>công dân</em> vun trồng trách nhiệm, sự chừng mực, phân định và ý thức về sự thật. Chỉ theo cách này đổi mới mới có thể đích thực phục vụ <em>phát triển toàn diện con người</em> — thay vì trở thành một nguồn loại trừ và thống trị. Và chỉ theo cách này lời hứa của tiến bộ mới có thể được nhìn nhận là đích thực — vì nó được đo dựa trên phẩm giá không thể xâm phạm của mỗi người nam và nữ.</div>
-          <div class="tv-bib"><strong>📖 Tóm kết Chương IV:</strong> Năm lãnh vực cụ thể (sự thật/dân chủ → giáo dục số → phẩm giá lao động → gia đình &amp; người trẻ → nô lệ kỹ thuật số) — tất cả phản ánh một vấn đề nền: nếu công nghệ trở thành tiêu chí tối hậu, con người bị giản lược thành dữ liệu. Đặc biệt: lời xin lỗi về nô lệ §176; "thực dân dữ liệu" §178; lao động ẩn giấu của AI §173.</div>
+          <div class="tv-bib"><strong>📖 Tóm kết Chương IV:</strong> Năm lãnh vực cụ thể (sự thật/dân chủ → giáo dục số → phẩm giá lao động → gia đình & người trẻ → nô lệ kỹ thuật số) — tất cả phản ánh một vấn đề nền: nếu công nghệ trở thành tiêu chí tối hậu, con người bị giản lược thành dữ liệu. Đặc biệt: lời xin lỗi về nô lệ §176; "thực dân dữ liệu" §178; lao động ẩn giấu của AI §173.</div>
         </div>
       </div>
 
@@ -5076,7 +5079,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-182">
         <div class="tv-num-col"><div class="tv-num">182</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Sau khi xét cách <span class="kw-inline" onclick="jumpToKw('AI')">AI</span> đang biến đổi một số khía cạnh của đời sống và xã hội — đặc biệt các hệ luỵ nghiêm trọng đối với phẩm giá con người — giờ đây chúng ta phải hướng chú ý đến vấn đề <em>còn bi đát hơn của chiến tranh</em>. Ở đây, câu hỏi không chỉ là hiệu năng của các công cụ mới, mà còn là nguy cơ rằng công nghệ — khi tách rời khỏi đạo đức và trách nhiệm — sẽ làm cho các quyết định về <em>sự sống và cái chết</em> trở nên nhanh hơn và phi-vị-tính hơn — và sẽ trình bày việc sử dụng vũ lực như một lựa chọn tức thời và khả thi. Trong một thế giới ngày càng phụ thuộc lẫn nhau, <em>hoà bình</em> không chỉ là một vấn đề trong nhiều vấn đề khác — mà là <em>điều kiện tiên quyết cho công ích phổ quát</em> và là một <em>phép thử cho sự trưởng thành đạo đức của các dân tộc</em> — đặc biệt của những người gánh trách nhiệm cai trị.</div>
+          <div class="tv-text">Sau khi xét cách thức một số khía cạnh của đời sống và xã hội đang bị biến đổi qua <span class="kw-inline" onclick="jumpToKw('AI')">AI</span> — đặc biệt các hệ luỵ nghiêm trọng đối với phẩm giá con người — giờ đây chúng ta phải hướng chú ý đến vấn đề <em>còn bi đát hơn của chiến tranh</em>. Ở đây, câu hỏi không chỉ là hiệu năng của các công cụ mới, mà còn là nguy cơ rằng công nghệ — khi tách rời khỏi đạo đức và trách nhiệm — sẽ làm cho các quyết định về <em>sự sống và cái chết</em> trở nên nhanh hơn và phi-vị-tính hơn — và sẽ trình bày việc sử dụng vũ lực như một lựa chọn tức thời và khả thi. Trong một thế giới ngày càng phụ thuộc lẫn nhau, <em>hoà bình</em> không chỉ là một vấn đề trong nhiều vấn đề khác — mà là <em>điều kiện tiên quyết cho công ích phổ quát</em> và là một <em>phép thử cho sự trưởng thành đạo đức của các dân tộc</em> — đặc biệt của những người gánh trách nhiệm cai trị.</div>
         </div>
       </div>
 
@@ -5084,7 +5087,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-183">
         <div class="tv-num-col"><div class="tv-num">183</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Cuộc cách mạng kỹ thuật số đang thay đổi <em>bản chất của xung đột</em>. Bên cạnh chiến tranh quy ước, có các hình thức lai như tấn công mạng, thao túng thông tin, các chiến dịch ảnh hưởng và sự tự động hoá các quyết định chiến lược. AI hoạt động như một <em>yếu tố gia tốc</em> trong các tiến trình này — đặc biệt trong một ngữ cảnh nơi nhiều công nghệ tự bản chất là <em>nước đôi</em>. Hệ quả là, điều được tạo ra để phòng vệ có thể nhanh chóng được dùng lại để tấn công — và ranh giới mỏng manh giữa bảo vệ và gây hấn trở nên mờ. Trong khi AI có thể tăng cường sự phòng vệ và bảo vệ thường dân, nó cũng có thể <em>hạ ngưỡng sử dụng vũ lực</em>, che chắn con người khỏi trách nhiệm và nuôi dưỡng một văn hoá nơi kẻ thù bị giản lược thành một con số thống kê và nạn nhân thành "<em>thiệt hại tập thể</em>" (<em>collateral damage</em>). Đối diện các biến đổi này, chúng ta phải nhắc lại các nguyên tắc của Học thuyết Xã hội — <em>phẩm giá con người, công ích, đích đến phổ quát của của cải, bổ trợ, liên đới và công lý</em> — vì chúng là các tiêu chí để phán đoán liệu các công nghệ thực sự phục vụ nhân loại hay đang khuất phục nhân loại. Vì thế, chúng ta nên xét các nguyên tắc này như các hướng dẫn cho việc ra quyết định.</div>
+          <div class="tv-text">Cuộc cách mạng kỹ thuật số đang thay đổi <em>bản chất của xung đột</em>. Bên cạnh chiến tranh quy ước, có các hình thức lai như tấn công mạng, thao túng thông tin, các chiến dịch ảnh hưởng và sự tự động hoá các quyết định chiến lược. Việc triển khai AI đem lại một <em>yếu tố gia tốc</em> trong các tiến trình này — đặc biệt trong một ngữ cảnh nơi nhiều công nghệ tự bản chất là <em>nước đôi</em>. Hệ quả là, điều được tạo ra để phòng vệ có thể nhanh chóng được dùng lại để tấn công — và ranh giới mỏng manh giữa bảo vệ và gây hấn trở nên mờ. Việc dùng AI có thể tăng cường sự phòng vệ và bảo vệ thường dân, nhưng cũng có thể <em>hạ ngưỡng sử dụng vũ lực</em>, che chắn con người khỏi trách nhiệm và nuôi dưỡng một văn hoá nơi kẻ thù bị giản lược thành một con số thống kê và nạn nhân thành "<em>thiệt hại tập thể</em>" (<em>collateral damage</em>). Đối diện các biến đổi này, chúng ta phải nhắc lại các nguyên tắc của Học thuyết Xã hội — <em>phẩm giá con người, công ích, đích đến phổ quát của của cải, bổ trợ, liên đới và công lý</em> — vì chúng là các tiêu chí để phán đoán liệu các công nghệ thực sự phục vụ nhân loại hay đang khuất phục nhân loại. Vì thế, chúng ta nên xét các nguyên tắc này như các hướng dẫn cho việc ra quyết định.</div>
         </div>
       </div>
 
@@ -5121,7 +5124,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-187">
         <div class="tv-num-col"><div class="tv-num">187</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Trực giác này tỏ ra còn căn bản hơn trong ngữ cảnh hiện thời của sự chuyển hoá kỹ thuật số. Các mạng lưới kỹ thuật số, nền kinh tế toàn cầu hoá và sự phát triển AI tạo nên các mối dây ngày càng chặt — nối kết — trong thời gian thực — các quyết định được làm ở một nơi với các tác động chúng sinh ra ở nơi khác. Theo nghĩa này, lời của Công đồng Vatican II về sự phụ thuộc lẫn nhau ngày càng tăng giữa các dân tộc vẫn còn tính thiết thực — vì công ích đang mang một chiều kích ngày càng phổ quát — với các quyền và bổn phận liên quan đến toàn thể gia đình nhân loại.<a class="fn-chip-inline" onclick="jumpToFn(179)">[179]</a> Vì thế, dự án văn minh tình thương phải đảm trách phận sự <em>biến đổi sự phụ thuộc bị áp đặt này thành một liên đới được muốn và được chọn</em>. Đây là nguyên tắc dẫn đường cho các tiến trình công nghệ: không đủ rằng <span class="kw-inline" onclick="jumpToKw('AI')">trí tuệ nhân tạo</span> làm chúng ta hiệu quả hay nối kết hơn; nó còn phải phục vụ việc xây dựng một <em>gia đình nhân loại phổ quát</em> — với các quyền và bổn phận chung — nơi sự gần gũi kỹ thuật số trở thành một cơ hội thực cho sự gặp gỡ và chăm sóc lẫn nhau.</div>
+          <div class="tv-text">Trực giác này tỏ ra còn căn bản hơn trong ngữ cảnh hiện thời của sự chuyển hoá kỹ thuật số. Các mạng lưới kỹ thuật số, nền kinh tế toàn cầu hoá và sự phát triển AI tạo nên các mối dây ngày càng chặt — nối kết — trong thời gian thực — các quyết định được làm ở một nơi với các tác động chúng sinh ra ở nơi khác. Theo nghĩa này, lời của Công đồng Vatican II về sự phụ thuộc lẫn nhau ngày càng tăng giữa các dân tộc vẫn còn tính thiết thực — vì công ích đang mang một chiều kích ngày càng phổ quát — với các quyền và bổn phận liên quan đến toàn thể gia đình nhân loại.<a class="fn-chip-inline" onclick="jumpToFn(179)">[179]</a> Vì thế, dự án văn minh tình thương phải đảm trách phận sự <em>biến đổi sự phụ thuộc bị áp đặt này thành một liên đới được muốn và được chọn</em>. Đây là nguyên tắc dẫn đường cho các tiến trình công nghệ: không đủ rằng việc dùng <span class="kw-inline" onclick="jumpToKw('AI')">trí tuệ nhân tạo</span> đem lại hiệu quả hay sự nối kết hơn; còn phải phục vụ việc xây dựng một <em>gia đình nhân loại phổ quát</em> — với các quyền và bổn phận chung — nơi sự gần gũi kỹ thuật số trở thành một cơ hội thực cho sự gặp gỡ và chăm sóc lẫn nhau.</div>
         </div>
       </div>
 
@@ -5229,7 +5232,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-198">
         <div class="tv-num-col"><div class="tv-num">198</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Đôi khi có lời nói về "<em>các tác nhân luân lý nhân tạo</em>" (<em>artificial moral agents</em>) — như thể các máy móc có khả năng phân biệt đúng và sai với sự nhất quán lớn hơn con người. Tuy nhiên, <em>phán đoán luân lý không thể giản lược thành tính toán</em> — vì nó bao hàm <em>lương tâm, trách nhiệm cá nhân và sự nhìn nhận tha nhân như một ngôi vị</em>. Vì thế, <em>không được phép uỷ thác các quyết định gây chết người hay không thể đảo ngược cho các hệ thống nhân tạo</em>. Không thuật toán nào có thể làm chiến tranh trở nên chấp nhận được về mặt luân lý. AI không loại bỏ tính phi-nhân-tính nội tại của xung đột; quả thật, nó chỉ có thể đem lại xung đột nhanh hơn và làm nó phi-vị-tính hơn — hạ ngưỡng cho việc sử dụng bạo lực — biến phòng vệ thành dự đoán mối đe doạ và do đó giản lược các nạn nhân thành dữ liệu. Theo cách này, nó sẽ làm chúng ta quen với ý tưởng rằng <em>bạo lực là không thể tránh khỏi và chỉ cần được tối ưu hoá</em>. Điều này không làm giảm tầm quan trọng của việc gieo cấy — trong mức có thể — các giá trị và phán đoán đúng đắn vào các hệ thống nhân tạo mà chúng ta xây dựng — để chúng có thể đóng góp vào một <em>hệ sinh thái đạo đức</em> trong đó con người được giúp tốt hơn để lắng nghe lương tâm của mình — cũng như cho phép các mô hình AI thiết lập các ranh giới thích hợp.</div>
+          <div class="tv-text">Đôi khi có lời nói về "<em>các tác nhân luân lý nhân tạo</em>" (<em>artificial moral agents</em>) — như thể các máy móc có khả năng phân biệt đúng và sai với sự nhất quán lớn hơn con người. Tuy nhiên, <em>phán đoán luân lý không thể giản lược thành tính toán</em> — vì nó bao hàm <em>lương tâm, trách nhiệm cá nhân và sự nhìn nhận tha nhân như một ngôi vị</em>. Vì thế, <em>không được phép uỷ thác các quyết định gây chết người hay không thể đảo ngược cho các hệ thống nhân tạo</em>. Không thuật toán nào có thể làm chiến tranh trở nên chấp nhận được về mặt luân lý. Việc dùng AI không loại bỏ tính phi-nhân-tính nội tại của xung đột; quả thật, qua AI, xung đột chỉ được đem đến nhanh hơn và trở nên phi-vị-tính hơn — hạ ngưỡng cho việc sử dụng bạo lực — biến phòng vệ thành dự đoán mối đe doạ và do đó giản lược các nạn nhân thành dữ liệu. Theo cách này, nó sẽ làm chúng ta quen với ý tưởng rằng <em>bạo lực là không thể tránh khỏi và chỉ cần được tối ưu hoá</em>. Điều này không làm giảm tầm quan trọng của việc gieo cấy — trong mức có thể — các giá trị và phán đoán đúng đắn vào các hệ thống nhân tạo mà chúng ta xây dựng — để chúng có thể đóng góp vào một <em>hệ sinh thái đạo đức</em> trong đó con người được giúp tốt hơn để lắng nghe lương tâm của mình — cũng như cho phép các mô hình AI thiết lập các ranh giới thích hợp.</div>
         </div>
       </div>
 
@@ -5237,7 +5240,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-199">
         <div class="tv-num-col"><div class="tv-num">199</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text">Không đủ kêu gọi một loại đạo đức chung chung. Phải thiết lập <em>các tiêu chí phân định cụ thể</em>. <strong>Tiêu chí đầu tiên</strong> liên quan đến <em>trách nhiệm cá nhân</em>. Khi quyết định tấn công trở nên tự động hay mờ ám, nguy cơ thoái thác trách nhiệm gia tăng. Vì lý do này, <em>chuỗi trách nhiệm phải có thể nhận diện được và kiểm chứng được</em>; những ai thiết kế, huấn luyện, cho phép và triển khai công nghệ phải chịu trách nhiệm về các quyết định của mình. <strong>Tiêu chí thứ hai</strong> liên quan đến <em>thời gian luân lý</em> để đưa ra phán đoán. Trong khi AI có xu hướng tăng tốc các tiến trình ra quyết định, <em>tốc độ và hiệu năng không bao giờ được là lực thúc đẩy tối thượng</em> cho các quyết định không thể đảo ngược được làm trong ngữ cảnh chiến tranh. <strong>Tiêu chí thứ ba</strong> là <em>nhận diện và bảo vệ thường dân</em>. Bất kỳ công nghệ nào tạo điều kiện cho các cuộc tấn công mà không nhìn thấy khuôn mặt của con người đều hạ ngưỡng luân lý của xung đột. Chọn lựa mục tiêu và sử dụng vũ lực <em>không được nhầm lẫn chiến binh và phi-chiến-binh</em>, cũng không được bỏ qua tác động lên các dân chúng không có khả năng tự vệ.</div>
+          <div class="tv-text">Không đủ kêu gọi một loại đạo đức chung chung. Phải thiết lập <em>các tiêu chí phân định cụ thể</em>. <strong>Tiêu chí đầu tiên</strong> liên quan đến <em>trách nhiệm cá nhân</em>. Khi quyết định tấn công trở nên tự động hay mờ ám, nguy cơ thoái thác trách nhiệm gia tăng. Vì lý do này, <em>chuỗi trách nhiệm phải có thể nhận diện được và kiểm chứng được</em>; những ai thiết kế, huấn luyện, cho phép và triển khai công nghệ phải chịu trách nhiệm về các quyết định của mình. <strong>Tiêu chí thứ hai</strong> liên quan đến <em>thời gian luân lý</em> để đưa ra phán đoán. Trong khi việc dùng AI có xu hướng làm cho các tiến trình ra quyết định được tăng tốc, <em>tốc độ và hiệu năng không bao giờ được là lực thúc đẩy tối thượng</em> cho các quyết định không thể đảo ngược được làm trong ngữ cảnh chiến tranh. <strong>Tiêu chí thứ ba</strong> là <em>nhận diện và bảo vệ thường dân</em>. Bất kỳ công nghệ nào tạo điều kiện cho các cuộc tấn công mà không nhìn thấy khuôn mặt của con người đều hạ ngưỡng luân lý của xung đột. Chọn lựa mục tiêu và sử dụng vũ lực <em>không được nhầm lẫn chiến binh và phi-chiến-binh</em>, cũng không được bỏ qua tác động lên các dân chúng không có khả năng tự vệ.</div>
         </div>
       </div>
 
@@ -5645,7 +5648,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       <div class="tv-card" id="tv-240">
         <div class="tv-num-col"><div class="tv-num">240</div><div class="tv-num-label">§</div></div>
         <div class="tv-body-col">
-          <div class="tv-text"><strong>Chúng ta hãy yêu mến công lý và hoà bình!</strong> Cùng các công nghệ tạo điều kiện cho truyền thông và tiếp cận các nguồn lực cũng có thể nâng đỡ các mô hình bóc lột những người dễ tổn thương nhất, tạo các hình thức nô lệ mới và kiếm lợi từ xung đột. Mọi quyết định kỹ thuật hay kinh tế nên bao gồm <em>sự phân định thiêng liêng</em> và là <em>một cơ hội đánh giá liệu các tiến bộ trong AI có đang cổ võ công lý và sự tham gia hay đang tập trung của cải và quyền lực vào tay một số ít chọn lọc</em>. Tôi khích lệ việc khảo sát cẩn thận <em>các chuỗi cung ứng của sản xuất kỹ thuật số, các điều kiện làm việc ẩn sau các thiết bị của chúng ta và các cơ chế kiếm lợi từ sự thao túng và chiến tranh</em>. Đồng thời, các cách thực hành cổ võ <em>sự công bằng, sự tham gia và chăm sóc tạo thành</em> phải được tìm. Chúng ta loan báo một hy vọng bắt rễ trong Đấng đã từ trời xuống để "<em>tạo nên một câu chuyện mới ở đây</em>". Vì lý do này, những ai tin được dấn thân đảm bảo rằng <em>một công lý lớn hơn sẽ thế chỗ cho bất bình đẳng</em> — và rằng <em>nghề chiến tranh sẽ được thay thế bởi nghệ thuật hoà bình</em>.<a class="fn-chip-inline" onclick="jumpToFn(221)">[221]</a></div>
+          <div class="tv-text"><strong>Chúng ta hãy yêu mến công lý và hoà bình!</strong> Cùng các công nghệ tạo điều kiện cho truyền thông và tiếp cận các nguồn lực cũng có thể nâng đỡ các mô hình bóc lột những người dễ tổn thương nhất, tạo các hình thức nô lệ mới và kiếm lợi từ xung đột. Mọi quyết định kỹ thuật hay kinh tế nên bao gồm <em>sự phân định thiêng liêng</em> và là <em>một cơ hội đánh giá liệu các tiến bộ trong AI có đang được dùng để cổ võ công lý và sự tham gia hay đang được dùng để tập trung của cải và quyền lực vào tay một số ít chọn lọc</em>. Tôi khích lệ việc khảo sát cẩn thận <em>các chuỗi cung ứng của sản xuất kỹ thuật số, các điều kiện làm việc ẩn sau các thiết bị của chúng ta và các cơ chế kiếm lợi từ sự thao túng và chiến tranh</em>. Đồng thời, các cách thực hành cổ võ <em>sự công bằng, sự tham gia và chăm sóc tạo thành</em> phải được tìm. Chúng ta loan báo một hy vọng bắt rễ trong Đấng đã từ trời xuống để "<em>tạo nên một câu chuyện mới ở đây</em>". Vì lý do này, những ai tin được dấn thân đảm bảo rằng <em>một công lý lớn hơn sẽ thế chỗ cho bất bình đẳng</em> — và rằng <em>nghề chiến tranh sẽ được thay thế bởi nghệ thuật hoà bình</em>.<a class="fn-chip-inline" onclick="jumpToFn(221)">[221]</a></div>
         </div>
       </div>
 
@@ -5736,7 +5739,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Dialogue 1 -->
-      <div class="dialogue-pair" id="dlg-0">
+      <div class="dialogue-pair">
         <div class="dlg-user">
           <div class="dlg-user-head">
             <div class="dlg-avatar usr">PN</div>
@@ -5774,7 +5777,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Dialogue 2 -->
-      <div class="dialogue-pair" id="dlg-1">
+      <div class="dialogue-pair">
         <div class="dlg-user">
           <div class="dlg-user-head">
             <div class="dlg-avatar usr">PN</div>
@@ -5826,7 +5829,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 1 -->
-      <div class="crit-card open" id="crit-0">
+      <div class="crit-card open">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">1</div>
           <div class="crit-head-text">
@@ -5845,7 +5848,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 2 -->
-      <div class="crit-card" id="crit-1">
+      <div class="crit-card">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">2</div>
           <div class="crit-head-text">
@@ -5864,7 +5867,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 3 -->
-      <div class="crit-card" id="crit-2">
+      <div class="crit-card">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">3</div>
           <div class="crit-head-text">
@@ -5883,7 +5886,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 4 -->
-      <div class="crit-card" id="crit-3">
+      <div class="crit-card">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">4</div>
           <div class="crit-head-text">
@@ -5902,7 +5905,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 5 -->
-      <div class="crit-card" id="crit-4">
+      <div class="crit-card">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">5</div>
           <div class="crit-head-text">
@@ -5921,7 +5924,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 6 -->
-      <div class="crit-card" id="crit-5">
+      <div class="crit-card">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">6</div>
           <div class="crit-head-text">
@@ -5934,13 +5937,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
           <p>Có hàng nghìn kỹ sư, nhà nghiên cứu, founder Công giáo đang làm việc tại OpenAI, Anthropic, Google DeepMind, Microsoft Research, Meta AI. Nhiều người trong số họ vật lộn với chính những câu hỏi mà <em>Magnifica Humanitas</em> đặt ra. Cộng đồng <em>AI &amp; Faith</em>, <em>Catholic AI Center</em> tại San Francisco, các nỗ lực của Pontifical Academy for Life cùng các nhà công nghệ ("Rome Call for AI Ethics", 2020/2023) — tất cả đều tồn tại.</p>
           <p>Văn kiện không trích dẫn một nhà công nghệ Công giáo nào. Không có dấu hiệu cho thấy quá trình soạn thảo đã tham vấn các nhóm này. So sánh: <em>Laudato Si'</em> đã trích dẫn các nhà khoa học khí hậu, các tài liệu của IPCC, các tư duy Patriarchate of Constantinople. <em>Caritas in Veritate</em> đã đối thoại với kinh tế học hiện đại. <em>Magnifica Humanitas</em> dường như được soạn chủ yếu từ truyền thống huấn quyền và một số tài liệu Holy See (Antiqua et Nova, 2025) — không từ thực tế làm việc với AI.</p>
           <p>Đây là một <em>methodological deficit</em>. Nguyên tắc bổ trợ (§70) đòi hỏi rằng những người ở "cấp thấp hơn và gần thực tại hơn" phải tham gia phân định. Khi viết về AI, "cấp gần thực tại nhất" là những người đang xây dựng nó. Sự vắng mặt của họ trong văn bản (không qua trích dẫn, không qua case study) làm yếu chính tính áp dụng của nguyên tắc bổ trợ mà văn kiện đề cao.</p>
-          <div class="crit-ref"><strong>Tài liệu tham khảo:</strong> Rome Call for AI Ethics (28.02.2020, ký bổ sung 2023); Pontifical Academy for Life &amp; Microsoft/IBM/FAO/Italian Government; Catholic AI Center (catholicaicenter.com).</div>
+          <div class="crit-ref"><strong>Tài liệu tham khảo:</strong> Rome Call for AI Ethics (28.02.2020, ký bổ sung 2023); Pontifical Academy for Life & Microsoft/IBM/FAO/Italian Government; Catholic AI Center (catholicaicenter.com).</div>
           <div class="crit-tags"><span class="crit-tag">Phương pháp luận</span><span class="crit-tag">Synodality</span></div>
         </div>
       </div>
 
       <!-- Critique 7 -->
-      <div class="crit-card" id="crit-6">
+      <div class="crit-card">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">7</div>
           <div class="crit-head-text">
@@ -5959,7 +5962,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 8 -->
-      <div class="crit-card" id="crit-7">
+      <div class="crit-card">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">8</div>
           <div class="crit-head-text">
@@ -5978,7 +5981,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 9 -->
-      <div class="crit-card" id="crit-8">
+      <div class="crit-card">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">9</div>
           <div class="crit-head-text">
@@ -5997,7 +6000,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 10 -->
-      <div class="crit-card" id="crit-9">
+      <div class="crit-card">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">10</div>
           <div class="crit-head-text">
@@ -6016,7 +6019,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
       </div>
 
       <!-- Critique 11 -->
-      <div class="crit-card" id="crit-10">
+      <div class="crit-card">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">11</div>
           <div class="crit-head-text">
@@ -6035,13 +6038,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
             <li><em>Surveillance AI</em> (nhận diện khuôn mặt, social credit) — câu hỏi chính là quyền riêng tư và áp bức chính trị.</li>
           </ul>
           <p>Mỗi loại đặt ra vấn đề đạo đức khác nhau và đòi hỏi khung điều tiết khác nhau. Văn kiện đôi khi nói như thể tất cả "AI" đều cùng một thực thể. Điều này làm cho các nguyên tắc trở nên khó áp dụng cụ thể. Một thông điệp tương lai nên phân biệt rõ.</p>
-          <div class="crit-ref"><strong>Phân loại tham khảo:</strong> Russell &amp; Norvig, <em>Artificial Intelligence: A Modern Approach</em> (4th ed., 2020); EU AI Act 2024 phân loại risk-based.</div>
+          <div class="crit-ref"><strong>Phân loại tham khảo:</strong> Russell & Norvig, <em>Artificial Intelligence: A Modern Approach</em> (4th ed., 2020); EU AI Act 2024 phân loại risk-based.</div>
           <div class="crit-tags"><span class="crit-tag tech">Phân loại AI</span><span class="crit-tag">Khái niệm học</span></div>
         </div>
       </div>
 
       <!-- Critique 12 -->
-      <div class="crit-card" id="crit-11">
+      <div class="crit-card">
         <div class="crit-head" onclick="this.parentElement.classList.toggle('open')">
           <div class="crit-num">12</div>
           <div class="crit-head-text">
@@ -6120,7 +6123,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1
     <div class="modal-icon">🔐</div>
     <h2 class="modal-title">Đăng nhập chỉnh sửa</h2>
     <p class="modal-sub">Nhập mật khẩu để kích hoạt quyền chỉnh sửa nội dung</p>
-    <input type="password" class="modal-input" id="pwdInput" placeholder="Mật khẩu…" onkeydown="if(event.key==='Enter')doLogin()">
+    <input type="password" class="modal-input" id="pwdInput"
+      placeholder="Mật khẩu…" onkeydown="if(event.key==='Enter')doLogin()">
     <button class="modal-btn" onclick="doLogin()">Xác nhận</button>
     <p class="modal-error" id="loginErr">Mật khẩu không đúng. Vui lòng thử lại.</p>
     <button class="modal-cancel" onclick="closeLogin()">Hủy</button>
@@ -6753,14 +6757,14 @@ const DATA_TOPICS = [
         "impl": "<strong>Linh đạo cụ thể:</strong> Đọc Magnificat hàng ngày (Phụng vụ Kinh Chiều) như 'la bàn' cho việc dùng AI và công nghệ."
       },
       {
-        "kw": "Chứng nhân: Cha Hồng Y Văn Thuận",
+        "kw": "Chứng nhân: Đức Hồng Y Văn Thuận",
         "tags_goc": [
           "Francis-Xavier Nguyễn Văn Thuận",
           "martyrs",
           "witnesses"
         ],
         "tags_vi": [
-          "Cha Hồng Y Phanxicô Xaviê Nguyễn Văn Thuận",
+          "Đức Hồng Y Phanxicô Xaviê Nguyễn Văn Thuận",
           "Chứng nhân Việt Nam"
         ],
         "preview": "Một trong những chứng nhân được Đức Lêô XIV nêu tên trong văn kiện.",
@@ -6784,7 +6788,7 @@ const DATA_TOPICS = [
         ],
         "quote": "...those witnesses who embodied the hope of the Gospel as well as human dignity amidst harsh, often inhumane conditions, such as Venerable Francis-Xavier Nguyễn Văn Thuận.",
         "ref": "MH n. 125",
-        "impl": "<strong>Mục vụ Việt Nam:</strong> Phổ biến Đường Hy Vọng và các tác phẩm khác của Cha Hồng Y như tài liệu linh đạo cho thời số."
+        "impl": "<strong>Mục vụ Việt Nam:</strong> Phổ biến Đường Hy Vọng và các tác phẩm khác của Đức Hồng Y như tài liệu linh đạo cho thời số."
       }
     ]
   }
@@ -6850,11 +6854,20 @@ function buildIndex() {
 function switchTab(tab, el) {
   document.querySelectorAll('.tab-btn,.nav-tab-link').forEach(b => b.classList.remove('active','tab-active'));
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById('sec-'+tab).classList.add('active');
+  const targetSection = document.getElementById('sec-'+tab);
+  if(targetSection) targetSection.classList.add('active');
   document.querySelectorAll('[data-tab="'+tab+'"]').forEach(b => {
     if(b.classList.contains('tab-btn')) b.classList.add('active');
     if(b.classList.contains('nav-tab-link')) b.classList.add('tab-active');
   });
+  // DEFENSIVE: nếu không có filter/search active, đảm bảo các cards trong tab này hiển thị
+  if(['chu_diem','tu_khoa','nan_de','cau_hoi'].includes(tab) && !searchQ && !langF && !capF){
+    document.querySelectorAll('#sec-'+tab+' .card').forEach(c => {
+      if(c.style.display === 'none') c.style.display = '';
+    });
+    const noEl = document.getElementById('no-'+tab);
+    if(noEl) noEl.style.display = 'none';
+  }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -6963,14 +6976,15 @@ function onSearch(v){
   document.getElementById('clearBtn').classList.toggle('vis', v.length > 0);
   if(v.length < 1){ hideSugg(); applyFilters(); return; }
 
-  // Split query into words (multi-word AND search)
-  const rawTerms = norm(v).split(/\s+/).filter(t => t.length > 0);
-  if(!rawTerms.length){ hideSugg(); applyFilters(); return; }
+  // PHRASE matching — toàn bộ input là MỘT chuỗi liên tục
+  // Chuẩn hoá khoảng trắng nhưng giữ thứ tự
+  const q = norm(v).trim().replace(/\s+/g, ' ');
+  if(!q){ hideSugg(); applyFilters(); return; }
 
-  // AND matching: every term must be present in text
+  // Tìm các item có chứa phrase q như một substring liên tục
   const hits = IDX.filter(it => {
-    const nt = norm(it.text);
-    return rawTerms.every(t => nt.includes(t));
+    const nt = norm(it.text).replace(/\s+/g, ' ');
+    return nt.includes(q);
   });
 
   const box = document.getElementById('suggestions');
@@ -6978,8 +6992,7 @@ function onSearch(v){
   if(!hits.length){
     box.innerHTML = `<div class="sugg-empty">
       <strong>Không tìm thấy kết quả</strong>
-      Không có đoạn nào chứa đồng thời tất cả các từ:
-      ${rawTerms.map(t=>`<code style="background:var(--gold-bg);color:var(--gold);padding:1px 6px;border-radius:3px;margin:0 2px">${escapeHTML(t)}</code>`).join('')}
+      Không có đoạn nào chứa cụm này: <code style="background:var(--gold-bg);color:var(--gold);padding:1px 6px;border-radius:3px;margin:0 2px;font-family:'Menlo','Consolas',monospace">${escapeHTML(q)}</code>
     </div>`;
     box.classList.add('vis');
     applyFilters();
@@ -6997,7 +7010,7 @@ function onSearch(v){
   let html = `<div class="sugg-header">
     <span class="sugg-header-count">${hits.length}</span>
     <span>kết quả trong ${Object.keys(grouped).length} chuyên mục</span>
-    <span class="sugg-header-terms">tìm: ${rawTerms.map(t=>`<code>${escapeHTML(t)}</code>`).join(' + ')}</span>
+    <span class="sugg-header-terms">cụm: <code>${escapeHTML(q)}</code></span>
   </div>`;
 
   // Build grouped list in canonical order
@@ -7011,15 +7024,17 @@ function onSearch(v){
         <span>${TAB_LABEL[tab] || tab}</span>
         <span class="sugg-group-count">${items.length}</span>
       </div>`;
+    // Truyền [q] (mảng 1 phần tử) để hlMulti và extractSnippet làm việc đúng với phrase
+    const phraseTerms = [q];
     for(const it of items){
-      const snippet = extractSnippet(it.text, rawTerms);
+      const snippet = extractSnippet(it.text, phraseTerms);
       html += `<div class="sugg-item" onclick="jumpTo('${it.id}','${it.tab}')">
         <div class="sugg-item-top">
           <span class="sugg-dot" style="background:${color}"></span>
-          <span class="sugg-label">${hlMulti(it.label, rawTerms)}</span>
+          <span class="sugg-label">${hlMulti(it.label, phraseTerms)}</span>
           <span class="sugg-type">${TAB_LABEL[it.tab] || ''}</span>
         </div>
-        <div class="sugg-snippet">${hlMulti(snippet, rawTerms)}</div>
+        <div class="sugg-snippet">${hlMulti(snippet, phraseTerms)}</div>
       </div>`;
     }
     html += `</div>`;
@@ -7103,7 +7118,15 @@ function jumpTo(id,tab){
   },80);
 }
 function jumpToKw(kw){const e=KW_JUMP[kw];if(e)jumpTo(e.id,e.tab);}
-function clearSearch(){document.getElementById('searchInput').value='';searchQ='';hideSugg();document.getElementById('clearBtn').classList.remove('vis');applyFilters();}
+function clearSearch(){
+  document.getElementById('searchInput').value='';
+  searchQ='';
+  hideSugg();
+  document.getElementById('clearBtn').classList.remove('vis');
+  // Reset toàn bộ cards về visible (defensive)
+  resetAllCardsVisible();
+  applyFilters();
+}
 document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))hideSugg();});
 
 /* ══ FILTERS ══ */
@@ -7118,22 +7141,34 @@ function filterCap(btn,cap){
   btn.classList.add('active');applyFilters();
 }
 function applyFilters(){
-  const q=norm(searchQ);
+  // Phrase matching: chuẩn hoá whitespace, dùng cả chuỗi như một substring
+  const q = norm(searchQ).trim().replace(/\s+/g, ' ');
   ['chu_diem','tu_khoa','nan_de','cau_hoi'].forEach(tab=>{
-    const cards=document.querySelectorAll('#list-'+tab+' .card');
-    let vis=0;
+    const cards = document.querySelectorAll('#list-'+tab+' .card');
+    let vis = 0;
     cards.forEach(card=>{
-      let show=true;
-      if(tab==='tu_khoa'&&langF)show=!!card.querySelector('.lang-'+langF);
-      if(tab==='cau_hoi'&&capF)show=card.dataset.cap===capF;
-      if(show&&q)show=norm(card.textContent).includes(q);
-      card.style.display=show?'':'none';
-      if(show)vis++;
+      let show = true;
+      if(tab==='tu_khoa' && langF) show = !!card.querySelector('.lang-'+langF);
+      if(tab==='cau_hoi' && capF) show = card.dataset.cap === capF;
+      if(show && q) show = norm(card.textContent).replace(/\s+/g, ' ').includes(q);
+      card.style.display = show ? '' : 'none';
+      if(show) vis++;
     });
-    const cntEl=document.getElementById('cnt-'+tab);
-    if(cntEl)cntEl.textContent=(q||(tab==='tu_khoa'&&langF)||(tab==='cau_hoi'&&capF))?vis+'/'+cards.length+' mục':'';
-    const noEl=document.getElementById('no-'+tab);
-    if(noEl)noEl.style.display=vis===0?'block':'none';
+    const cntEl = document.getElementById('cnt-'+tab);
+    if(cntEl) cntEl.textContent = (q || (tab==='tu_khoa' && langF) || (tab==='cau_hoi' && capF)) ? vis+'/'+cards.length+' mục' : '';
+    const noEl = document.getElementById('no-'+tab);
+    if(noEl) noEl.style.display = vis===0 ? 'block' : 'none';
+  });
+}
+
+/* ══ DEFENSIVE: reset cards về visible khi clear search ══ */
+function resetAllCardsVisible(){
+  ['chu_diem','tu_khoa','nan_de','cau_hoi'].forEach(tab=>{
+    document.querySelectorAll('#sec-'+tab+' .card').forEach(c => c.style.display = '');
+    const noEl = document.getElementById('no-'+tab);
+    if(noEl) noEl.style.display = 'none';
+    const cntEl = document.getElementById('cnt-'+tab);
+    if(cntEl) cntEl.textContent = '';
   });
 }
 
@@ -7237,46 +7272,23 @@ function doLogin(){
   else{document.getElementById('loginErr').classList.add('vis');document.getElementById('pwdInput').value='';document.getElementById('pwdInput').focus();}
 }
 document.getElementById('pwdInput').addEventListener('keydown',e=>{if(e.key==='Escape')closeLogin();});
-/* ══ COMPREHENSIVE EDIT SELECTORS ══ */
-const EDITABLE_SELECTORS = [
-  // Masthead / Header
-  '.ms-eyebrow','.ms-title','.ms-title-vi','.ms-subtitle','.ms-author','.ms-body','.ms-position',
-  // General cards
-  '.card-title','.card-desc',
-  '.arg-list li','.debate-list li',
-  '.definition','.citation',
-  '.warning-box','.context-box','.src-badge',
-  '.ref-block li','.fn-chip','.fn-more',
-  // Chapter view
-  '.chapter-title','.chapter-summary',
-  '.muc-doan','.muc-ten','.muc-body',
-  '.chapter-trich',
-  // Topic cards
-  '.tc-kw','.tc-preview','.cat-head-title',
-  // Press conference (Họp báo)
-  '.hb-intro','.hb-name','.hb-role','.hb-thutu',
-  '.hb-trongtam','.hb-tomtat','.hb-trich',
-  '.hb-diem-list li','.hb-qs-title','.hb-qs-name','.hb-qs-body',
-  // Side panel
-  '.panel-title','.p-kw','.p-tag',
-  '.p-arg-t','.p-quote','.p-quote-ref',
-  '.obj-text','.resp-text','.impl-text',
-  // Footnotes tab
-  '.fn-content','.fn-intro',
-  // Toàn văn dịch
-  '.tv-intro p','.tv-intro-title','.tv-chap-title','.tv-chap-range',
-  '.tv-text','.tv-bib',
-  // Phản biện AI
-  '.pb-intro p','.pb-intro-title','.pb-part-title','.pb-part-sub',
-  '.crit-title','.crit-thesis','.crit-body p',
-  '.crit-quote','.crit-ref',
-  '.dlg-q-text','.dlg-who','.dlg-stamp',
-  '.dlg-ai-body p','.dlg-ai-body h4','.dlg-ai-body li',
-  '.dlg-ai-body blockquote',
-  '.pb-final-title','.pb-final-body p','.pb-disclaimer',
-  // Footer
-  '.app-footer p'
-];
+/* ══ EDIT MODE TRIỆT ĐỂ: TOÀN BỘ document editable, chỉ trừ vài ngoại lệ ══ */
+// Chỉ giữ NON-editable trên những element TUYỆT ĐỐI cần thiết cho chức năng:
+// - <input>, <textarea>, <select> (form controls, không thể contenteditable)
+// - .edit-mode-bar (để Save/Exit hoạt động được)
+// - .back-btn (để Back hoạt động)
+// - .kw-inline, .fn-chip-inline, .fn-chip (để click navigation hoạt động chính xác)
+// - #loginModal (để password input hoạt động)
+// - .toggle-arrow (icon arrows — không phải text)
+// MỌI text khác — kể cả tab labels, nav links, ctrl buttons, mọi button khác — đều SỬA ĐƯỢC.
+// Khi click một button có onclick, browser vẫn fire handler (onclick + place cursor cả hai).
+const NON_EDITABLE_SELECTOR =
+  'input, textarea, select, ' +
+  '.edit-mode-bar, .edit-mode-bar *, ' +
+  '.back-btn, .back-btn *, ' +
+  '.kw-inline, .fn-chip-inline, .fn-chip, ' +
+  '.toggle-arrow, ' +
+  '#loginModal, #loginModal *';
 
 function enterEdit(){
   editMode = true;
@@ -7285,14 +7297,17 @@ function enterEdit(){
   btn.textContent = '✎ Đang sửa — Thoát';
   btn.classList.add('active');
 
-  document.querySelectorAll(EDITABLE_SELECTORS.join(',')).forEach(el => {
-    el.setAttribute('contenteditable', 'true');
-    el.setAttribute('data-original', el.innerHTML);
+  // Bật contenteditable trên TOÀN BỘ <body> — mọi text con đều editable
+  document.body.setAttribute('contenteditable', 'true');
+
+  // Tắt edit trên các UI chức năng (click handlers vẫn hoạt động)
+  document.querySelectorAll(NON_EDITABLE_SELECTOR).forEach(el => {
+    el.setAttribute('contenteditable', 'false');
   });
 
-  // Count for user feedback
-  const count = document.querySelectorAll('[contenteditable="true"]').length;
-  console.log('✓ Edit mode: ' + count + ' elements editable');
+  console.log('✓ Edit mode triệt để: body editable, chỉ ' +
+    document.querySelectorAll('[contenteditable="false"]').length +
+    ' element giữ non-editable (controls và navigation chips)');
 }
 
 function exitEdit(){
@@ -7301,7 +7316,8 @@ function exitEdit(){
   const btn = document.querySelector('.ctrl-btn[onclick="openLogin()"]');
   btn.textContent = '✎ Chỉnh sửa';
   btn.classList.remove('active');
-  document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+  // Gỡ TẤT CẢ contenteditable (cả true và false)
+  document.querySelectorAll('[contenteditable]').forEach(el => {
     el.removeAttribute('contenteditable');
     el.removeAttribute('data-original');
   });
@@ -7409,7 +7425,9 @@ document.addEventListener('keydown',e=>{
 /* ══ INIT ══ */
 buildTheoChude();
 buildIndex();
+// Defensive: ensure all cards in 4 filterable tabs are visible on load
+// (in case the saved file had display:none baked in from previous search/filter state)
+resetAllCardsVisible();
 </script>
-
-
-</body></html>
+</body>
+</html>
